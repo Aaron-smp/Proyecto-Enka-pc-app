@@ -6,11 +6,17 @@ package animales;
 
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
+import com.google.cloud.firestore.QuerySnapshot;
+import com.google.firebase.cloud.FirestoreClient;
 import java.awt.Font;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -26,8 +32,9 @@ public class PnlAnimales extends javax.swing.JPanel {
      * Creates new form PnlAnimales
      */
     private Firestore firestore;
+    private JFrame frame;
     
-    public PnlAnimales(Firestore firestore) {
+    public PnlAnimales(Firestore firestore, JFrame frame) {
         initComponents();
         Font headerFont = new Font("Segoe UI", Font.PLAIN, 18);
         JTableHeader header = tablaBovino.getTableHeader();
@@ -37,6 +44,7 @@ public class PnlAnimales extends javax.swing.JPanel {
         header = tablaAves.getTableHeader();
         header.setFont(headerFont);
         this.firestore = firestore;
+        this.frame = frame;
     }
 
     /**
@@ -355,7 +363,6 @@ public class PnlAnimales extends javax.swing.JPanel {
                 return types [columnIndex];
             }
         });
-        tablaBovino.setEnabled(false);
         tablaBovino.setShowGrid(true);
         jScrollPane2.setViewportView(tablaBovino);
 
@@ -388,7 +395,6 @@ public class PnlAnimales extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        tablaPorcino.setEnabled(false);
         jScrollPane3.setViewportView(tablaPorcino);
 
         tablasPane.addTab("Porcino", jScrollPane3);
@@ -415,7 +421,6 @@ public class PnlAnimales extends javax.swing.JPanel {
                 return types [columnIndex];
             }
         });
-        tablaAves.setEnabled(false);
         jScrollPane4.setViewportView(tablaAves);
 
         tablasPane.addTab("Aves", jScrollPane4);
@@ -479,7 +484,29 @@ public class PnlAnimales extends javax.swing.JPanel {
     }//GEN-LAST:event_fechaNacPorMouseClicked
 
     private void borrarRowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrarRowActionPerformed
-        
+        UtilsAnimales util = new UtilsAnimales(firestore);
+        int respuesta = JOptionPane.showOptionDialog(null, "¿Estas seguro de borrarlo?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+        if(respuesta == JOptionPane.YES_OPTION){
+            if(tablasPane.getSelectedIndex() == 0){
+                int columna = tablaBovino.getSelectedColumn();
+                int fila = tablaBovino.getSelectedRow();
+                String id = (String) tablaBovino.getValueAt(fila, 0);
+                util.borrarBovino(id);
+                refrescarBovino();
+            }else if(tablasPane.getSelectedIndex() == 1){
+                int columna = tablaPorcino.getSelectedColumn();
+                int fila = tablaPorcino.getSelectedRow();
+                String id = (String) tablaPorcino.getValueAt(fila, 0);
+                util.borrarPorcino(id);
+                refrescarPorcino();
+                System.out.println(id);
+            }else{
+                int fila = tablaAves.getSelectedRow();
+                long lote = (Long) tablaAves.getValueAt(fila, 0);
+                util.borrarAve(lote);
+                refrescarAves();
+            }
+        }
     }//GEN-LAST:event_borrarRowActionPerformed
 
     private void addBovinoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBovinoActionPerformed
@@ -569,7 +596,45 @@ public class PnlAnimales extends javax.swing.JPanel {
     }//GEN-LAST:event_addPorcinoActionPerformed
 
     private void editarRowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarRowActionPerformed
-        
+        UtilsAnimales util = new UtilsAnimales(firestore);
+        Firestore db = FirestoreClient.getFirestore();
+        String fecha = null, sexo = null, raza = null, momento = null;
+        boolean vendi = false;
+        try {
+            QuerySnapshot query = db.collection("animales").document("ave")
+                    .collection("aves").whereEqualTo("nLote", lote).get().get();
+            fecha = query.getDocuments().get(0).getString("Fecha nacimiento");
+            sexo = query.getDocuments().get(0).getString("Sexo");
+            raza = query.getDocuments().get(0).getString("Raza");
+            momento = query.getDocuments().get(0).getString("Momento reproductivo");
+            vendi = query.getDocuments().get(0).getBoolean("Vendido");
+        } catch (InterruptedException ex) {
+            Logger.getLogger(PnlAnimales.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ExecutionException ex) {
+            Logger.getLogger(PnlAnimales.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        int fila = tablaBovino.getSelectedRow();
+        String id = (String) tablaBovino.getValueAt(fila, 0);
+        EditPanelBovino edit = new EditPanelBovino(frame, true, id, fecha, sexo, raza, momento, vendi);
+        edit.setVisible(true);
+        /*if(tablasPane.getSelectedIndex() == 0){
+            int columna = tablaBovino.getSelectedColumn();
+            int fila = tablaBovino.getSelectedRow();
+            String id = (String) tablaBovino.getValueAt(fila, 0);
+            util.updateBovino(frame);
+            refrescarBovino();
+        }else if(tablasPane.getSelectedIndex() == 1){
+            int columna = tablaPorcino.getSelectedColumn();
+            int fila = tablaPorcino.getSelectedRow();
+            String id = (String) tablaPorcino.getValueAt(fila, 0);
+            
+            refrescarPorcino();
+        }else{
+            int fila = tablaAves.getSelectedRow();
+            long lote = (Long) tablaAves.getValueAt(fila, 0);
+            
+            refrescarAves();
+        }*/
     }//GEN-LAST:event_editarRowActionPerformed
 
     private void refrescarTablaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refrescarTablaActionPerformed

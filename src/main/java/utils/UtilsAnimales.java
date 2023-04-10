@@ -4,6 +4,7 @@
  */
 package utils;
 
+import animales.EditPanelBovino;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.CollectionReference;
 import com.google.cloud.firestore.DocumentReference;
@@ -12,6 +13,7 @@ import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.Query;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
+import com.google.firebase.cloud.FirestoreClient;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
@@ -22,6 +24,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+import javax.swing.JFrame;
 
 /**
  *
@@ -165,4 +168,58 @@ public class UtilsAnimales {
         return credenciales;
     }
     
+    public void borrarBovino(String id) {
+        try {
+            Firestore db = FirestoreClient.getFirestore();
+            QuerySnapshot query = db.collection("animales").document("bovino")
+                    .collection("bovinos").whereEqualTo("Numero identificacion", id).get().get();
+            if (!query.isEmpty()) {
+                QueryDocumentSnapshot doc = query.getDocuments().get(0);
+                DocumentReference docRef = doc.getReference();
+                docRef.delete().get();
+            }
+        } catch (InterruptedException ex) {
+            Logger.getLogger(UtilsAnimales.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ExecutionException ex) {
+            Logger.getLogger(UtilsAnimales.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void borrarPorcino(String id) {
+        try {
+            Firestore db = FirestoreClient.getFirestore();
+            QuerySnapshot query = db.collection("animales").document("porcino")
+                    .collection("porcinos").whereEqualTo("Numero identificacion", id).get().get();
+            if (!query.isEmpty()) {
+                QueryDocumentSnapshot doc = query.getDocuments().get(0);
+                DocumentReference docRef = doc.getReference();
+                docRef.delete().get();
+            }
+        } catch (InterruptedException ex) {
+            Logger.getLogger(UtilsAnimales.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ExecutionException ex) {
+            Logger.getLogger(UtilsAnimales.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void borrarAve(long lote) {
+        try {
+            Firestore db = FirestoreClient.getFirestore();
+            QuerySnapshot query = db.collection("animales").document("ave")
+                    .collection("aves").whereEqualTo("nLote", lote).get().get();
+            if (!query.isEmpty()) {
+                QueryDocumentSnapshot doc = query.getDocuments().get(0);
+                DocumentReference docRef = doc.getReference();
+                docRef.delete().get();
+            }
+        } catch (InterruptedException ex) {
+            Logger.getLogger(UtilsAnimales.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ExecutionException ex) {
+            Logger.getLogger(UtilsAnimales.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void updateBovino(){
+        
+    }
 }

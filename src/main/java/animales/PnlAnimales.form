@@ -551,7 +551,6 @@
                         <Column editable="true" title="Vendido" type="java.lang.Boolean"/>
                       </Table>
                     </Property>
-                    <Property name="enabled" type="boolean" value="false"/>
                     <Property name="showGrid" type="boolean" value="true"/>
                   </Properties>
                 </Component>
@@ -582,7 +581,6 @@
                         <Column editable="false" title="Vendido" type="java.lang.Boolean"/>
                       </Table>
                     </Property>
-                    <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
                 </Component>
               </SubComponents>
@@ -611,7 +609,6 @@
                         <Column editable="true" title="Vendido" type="java.lang.Boolean"/>
                       </Table>
                     </Property>
-                    <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
                 </Component>
               </SubComponents>

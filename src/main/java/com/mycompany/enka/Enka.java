@@ -57,8 +57,8 @@ public class Enka extends javax.swing.JFrame {
     private final Color SOLEADO_CLA = new Color(253, 246, 247);
     private final Color SOLEADO_OSC = new Color(213, 206, 187);
     //Noche oscura
-    private final Color NOCHE_CLA = new Color(27, 32, 43);
-    private final Color NOCHE_OSC = new Color(70, 70, 80);
+    private final Color NOCHE_CLA = new Color(90, 90, 100);
+    private final Color NOCHE_OSC = new Color(27, 32, 43);
     //Azul zafiro
     private final Color AZUL_CLA = new Color(220, 220, 220);
     private final Color AZUL_OSC = new Color(1, 22, 39);
@@ -78,7 +78,7 @@ public class Enka extends javax.swing.JFrame {
         this.setIconImage(icono.getImage());
         CardLayout card = new CardLayout();
         pantallaPrincipal.setLayout(card);
-        PnlAnimales pnlAni = new PnlAnimales(this.firestore);
+        PnlAnimales pnlAni = new PnlAnimales(this.firestore, this);
         pnlAni.refrescarBovino();
         pnlAni.refrescarPorcino();
         pnlAni.refrescarAves();
@@ -280,7 +280,7 @@ public class Enka extends javax.swing.JFrame {
         pnlPerfil.add(labelPerf, java.awt.BorderLayout.SOUTH);
 
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel12.setIcon(new ImageIcon(getClass().getResource("/iconos/correo.png")));
+        jLabel12.setIcon(new ImageIcon(getClass().getResource("/iconos/perfil.png")));
         pnlPerfil.add(jLabel12, java.awt.BorderLayout.CENTER);
 
         menuLateral.add(pnlPerfil);
