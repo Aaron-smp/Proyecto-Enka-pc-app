@@ -219,7 +219,5 @@ public class UtilsAnimales {
         }
     }
     
-    public void updateBovino(){
-        
-    }
+    
 }

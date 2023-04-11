@@ -4,13 +4,17 @@
  */
 package animales;
 
+import com.google.cloud.firestore.CollectionReference;
+import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.Query;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.firebase.cloud.FirestoreClient;
 import java.awt.Font;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
@@ -596,45 +600,67 @@ public class PnlAnimales extends javax.swing.JPanel {
     }//GEN-LAST:event_addPorcinoActionPerformed
 
     private void editarRowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarRowActionPerformed
-        UtilsAnimales util = new UtilsAnimales(firestore);
         Firestore db = FirestoreClient.getFirestore();
-        String fecha = null, sexo = null, raza = null, momento = null;
-        boolean vendi = false;
-        try {
-            QuerySnapshot query = db.collection("animales").document("ave")
-                    .collection("aves").whereEqualTo("nLote", lote).get().get();
-            fecha = query.getDocuments().get(0).getString("Fecha nacimiento");
-            sexo = query.getDocuments().get(0).getString("Sexo");
-            raza = query.getDocuments().get(0).getString("Raza");
-            momento = query.getDocuments().get(0).getString("Momento reproductivo");
-            vendi = query.getDocuments().get(0).getBoolean("Vendido");
-        } catch (InterruptedException ex) {
-            Logger.getLogger(PnlAnimales.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ExecutionException ex) {
-            Logger.getLogger(PnlAnimales.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        int fila = tablaBovino.getSelectedRow();
-        String id = (String) tablaBovino.getValueAt(fila, 0);
-        EditPanelBovino edit = new EditPanelBovino(frame, true, id, fecha, sexo, raza, momento, vendi);
-        edit.setVisible(true);
-        /*if(tablasPane.getSelectedIndex() == 0){
-            int columna = tablaBovino.getSelectedColumn();
-            int fila = tablaBovino.getSelectedRow();
-            String id = (String) tablaBovino.getValueAt(fila, 0);
-            util.updateBovino(frame);
-            refrescarBovino();
+        
+        if(tablasPane.getSelectedIndex() == 0){
+            if(tablaBovino.getSelectedRow()>= 0){
+                String fecha = null, sexo = null, raza = null, momento = null;
+                boolean vendi = false;
+                int fila = tablaBovino.getSelectedRow();
+                String id = (String) tablaBovino.getValueAt(fila, 0);
+                System.out.println(id);
+                try {
+                    QuerySnapshot query = db.collection("animales").document("bovino")
+                            .collection("bovinos").whereEqualTo("Numero identificacion", id).get().get();
+                    System.out.println(query.size());
+                    fecha = query.getDocuments().get(0).getString("Fecha nacimiento");
+                    sexo = query.getDocuments().get(0).getString("Sexo");
+                    raza = query.getDocuments().get(0).getString("Raza");
+                    momento = query.getDocuments().get(0).getString("Momento reproductivo");
+                    vendi = query.getDocuments().get(0).getBoolean("Vendido");
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(PnlAnimales.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ExecutionException ex) {
+                    Logger.getLogger(PnlAnimales.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                EditPanelBovino edit = new EditPanelBovino(frame, true, id, fecha, sexo, raza, momento, vendi);
+                edit.setVisible(true);
+                if(edit.isContinuar()){
+                    String idDocu = "";
+                    UtilsAnimales util = new UtilsAnimales(firestore);
+                    List<QueryDocumentSnapshot> listaBovinos = util.getBovinos();
+                    for (QueryDocumentSnapshot documento : listaBovinos) {
+                        if(documento.getString("Numero identificacion").equals(id)){
+                            idDocu = documento.getId();
+                        }
+                    }
+                    DocumentReference docRef = db.collection("animales").document("bovino").collection("bovinos").document(idDocu);
+                    HashMap<String, Object> map = new HashMap();
+                    map.put("Numero identificacion", id);
+                    map.put("Momento reproductivo", edit.getMomento());
+                    map.put("Raza", edit.getRazaa());
+                    map.put("Sexo", edit.getSexo());
+                    map.put("Fecha nacimiento", edit.getFechaNacS());
+                    map.put("Vendido", edit.isVendi());
+                    docRef.update(map);
+                    refrescarBovino();
+                    edit.dispose();
+                }
+            }
         }else if(tablasPane.getSelectedIndex() == 1){
-            int columna = tablaPorcino.getSelectedColumn();
-            int fila = tablaPorcino.getSelectedRow();
-            String id = (String) tablaPorcino.getValueAt(fila, 0);
-            
+            if(tablaPorcino.getSelectedRow()>= 0){
+                int fila = tablaPorcino.getSelectedRow();
+                String id = (String) tablaPorcino.getValueAt(fila, 0);
+                
+            }
+
             refrescarPorcino();
         }else{
             int fila = tablaAves.getSelectedRow();
             long lote = (Long) tablaAves.getValueAt(fila, 0);
-            
+
             refrescarAves();
-        }*/
+        }
     }//GEN-LAST:event_editarRowActionPerformed
 
     private void refrescarTablaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refrescarTablaActionPerformed

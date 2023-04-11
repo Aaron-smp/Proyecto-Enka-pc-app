@@ -4,6 +4,9 @@
  */
 package animales;
 
+import javax.swing.JOptionPane;
+import utils.UtilsAnimales;
+
 /**
  *
  * @author Aaron
@@ -14,6 +17,12 @@ public class EditPanelBovino extends javax.swing.JDialog {
      * Creates new form editPanel
      */
     private String id;
+    private String sexo;
+    private String fechaNacS;
+    private String razaa;
+    private String momento;
+    private boolean vendi;
+    private boolean continuar;
     
     public EditPanelBovino(java.awt.Frame parent, boolean modal, String id, String fecha, String sexo, String raza, String momento, boolean vendi) {
         super(parent, modal);
@@ -23,6 +32,9 @@ public class EditPanelBovino extends javax.swing.JDialog {
         fechaNac.setText(fecha);
         this.raza.setText(raza);
         vendido.setSelected(vendi);
+        sex.setSelectedItem(sexo);
+        moment.setSelectedItem(momento);
+        this.continuar = false;
     }
 
     /**
@@ -87,7 +99,8 @@ public class EditPanelBovino extends javax.swing.JDialog {
 
         sex.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         sex.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Macho", "Hembra" }));
-        sex.setPreferredSize(new java.awt.Dimension(96, 40));
+        sex.setMinimumSize(new java.awt.Dimension(105, 28));
+        sex.setPreferredSize(new java.awt.Dimension(105, 40));
         sex.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 sexActionPerformed(evt);
@@ -127,7 +140,13 @@ public class EditPanelBovino extends javax.swing.JDialog {
 
         jPanel2.add(jPanel7);
 
+        jButton1.setFont(new java.awt.Font("Poppins SemiBold", 0, 18)); // NOI18N
         jButton1.setText("Aceptar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         jPanel2.add(jButton1);
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.CENTER);
@@ -155,6 +174,73 @@ public class EditPanelBovino extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_sexActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        UtilsAnimales util = new UtilsAnimales();
+        this.fechaNacS = fechaNac.getText();
+        if(util.comprobarFecha(this.fechaNacS)){
+            this.sexo = (String) sex.getSelectedItem();
+            this.vendi = vendido.isSelected();
+            this.razaa = raza.getText();
+            this.momento = (String) moment.getSelectedItem();
+            this.continuar = true;
+            if(this.sexo.equals("Macho")){
+                momento = "No tiene";
+            }
+            this.setVisible(false);
+       }else{
+            JOptionPane.showMessageDialog(null, "Fecha mal formada");
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    public String getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
+    }
+
+    public String getFechaNacS() {
+        return fechaNacS;
+    }
+
+    public void setFechaNacS(String fechaNacS) {
+        this.fechaNacS = fechaNacS;
+    }
+
+    public String getRazaa() {
+        return razaa;
+    }
+
+    public void setRazaa(String razaa) {
+        this.razaa = razaa;
+    }
+
+    public String getMomento() {
+        return momento;
+    }
+
+    public void setMomento(String momento) {
+        this.momento = momento;
+    }
+
+    public boolean isVendi() {
+        return vendi;
+    }
+
+    public void setVendi(boolean vendi) {
+        this.vendi = vendi;
+    }
+
+    public boolean isContinuar() {
+        return continuar;
+    }
+
+    public void setContinuar(boolean continuar) {
+        this.continuar = continuar;
+    }
+    
+    
     /**
      * @param args the command line arguments
      */
