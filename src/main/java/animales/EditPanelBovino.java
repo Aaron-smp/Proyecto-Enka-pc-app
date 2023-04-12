@@ -67,7 +67,7 @@ public class EditPanelBovino extends javax.swing.JDialog {
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(497, 500));
+        setPreferredSize(new java.awt.Dimension(525, 500));
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
@@ -88,7 +88,8 @@ public class EditPanelBovino extends javax.swing.JDialog {
         jLabel2.setText("Fecha de nacimiento");
         jPanel3.add(jLabel2);
 
-        fechaNac.setPreferredSize(new java.awt.Dimension(250, 40));
+        fechaNac.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        fechaNac.setPreferredSize(new java.awt.Dimension(210, 40));
         jPanel3.add(fechaNac);
 
         jPanel2.add(jPanel3);
@@ -97,10 +98,10 @@ public class EditPanelBovino extends javax.swing.JDialog {
         jLabel3.setText("Sexo");
         jPanel4.add(jLabel3);
 
-        sex.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        sex.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
         sex.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Macho", "Hembra" }));
         sex.setMinimumSize(new java.awt.Dimension(105, 28));
-        sex.setPreferredSize(new java.awt.Dimension(105, 40));
+        sex.setPreferredSize(new java.awt.Dimension(150, 40));
         sex.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 sexActionPerformed(evt);
@@ -114,6 +115,7 @@ public class EditPanelBovino extends javax.swing.JDialog {
         jLabel4.setText("Raza");
         jPanel5.add(jLabel4);
 
+        raza.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         raza.setPreferredSize(new java.awt.Dimension(250, 40));
         jPanel5.add(raza);
 
@@ -123,10 +125,10 @@ public class EditPanelBovino extends javax.swing.JDialog {
         jLabel5.setText("Momento reproductivo");
         jPanel6.add(jLabel5);
 
-        moment.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        moment.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
         moment.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Vaca no gestante", "Vaca gestante", "Vaca en celo o en estro", "Vaca en postparto o lactancia" }));
         moment.setEnabled(false);
-        moment.setPreferredSize(new java.awt.Dimension(251, 40));
+        moment.setPreferredSize(new java.awt.Dimension(220, 40));
         jPanel6.add(moment);
 
         jPanel2.add(jPanel6);
@@ -155,7 +157,7 @@ public class EditPanelBovino extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 549, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

@@ -4,14 +4,17 @@
  */
 package animales;
 
+import javax.swing.JOptionPane;
+import utils.UtilsAnimales;
+
 /**
  *
  * @author Aaron
  */
-public class editPanelPorcino extends javax.swing.JDialog {
+public class EditPanelPorcino extends javax.swing.JDialog {
 
     /**
-     * Creates new form editPanelPorcino
+     * Creates new form EditPanelPorcino
      */
     private String id;
     private String fecha;
@@ -20,15 +23,20 @@ public class editPanelPorcino extends javax.swing.JDialog {
     private boolean vendi;
     private boolean continuar;
     
-    public editPanelPorcino(java.awt.Frame parent, boolean modal, String id, String fecha, String sexo, String raza, boolean vendi) {
+    public EditPanelPorcino(java.awt.Frame parent, boolean modal, String id, String fecha, String sexo, String raza, boolean vendi) {
         super(parent, modal);
         initComponents();
+        titulo.setText("Editar " + id);
         this.id = id;
         this.fecha = fecha;
         this.sexo = sexo;
         this.raza = raza;
         this.vendi = vendi;
         this.continuar = false;
+        fechaNacS.setText(fecha);
+        razaa.setText(raza);
+        sex.setSelectedItem(sexo);
+        vendido.setSelected(vendi);
     }
 
     public String getId() {
@@ -90,7 +98,7 @@ public class editPanelPorcino extends javax.swing.JDialog {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        titulo = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -112,12 +120,12 @@ public class editPanelPorcino extends javax.swing.JDialog {
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jLabel1.setFont(new java.awt.Font("Poppins SemiBold", 0, 35)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Editar");
-        jLabel1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        jLabel1.setPreferredSize(new java.awt.Dimension(105, 80));
-        jPanel1.add(jLabel1, java.awt.BorderLayout.NORTH);
+        titulo.setFont(new java.awt.Font("Poppins SemiBold", 0, 35)); // NOI18N
+        titulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        titulo.setText("Editar");
+        titulo.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        titulo.setPreferredSize(new java.awt.Dimension(105, 80));
+        jPanel1.add(titulo, java.awt.BorderLayout.NORTH);
 
         jPanel3.setLayout(new java.awt.GridLayout(5, 1));
 
@@ -125,6 +133,7 @@ public class editPanelPorcino extends javax.swing.JDialog {
         jLabel2.setText("Raza");
         jPanel2.add(jLabel2);
 
+        razaa.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         razaa.setPreferredSize(new java.awt.Dimension(250, 40));
         jPanel2.add(razaa);
 
@@ -134,6 +143,7 @@ public class editPanelPorcino extends javax.swing.JDialog {
         jLabel3.setText("Fecha de nacimiento");
         jPanel4.add(jLabel3);
 
+        fechaNacS.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         fechaNacS.setPreferredSize(new java.awt.Dimension(220, 40));
         jPanel4.add(fechaNacS);
 
@@ -143,6 +153,7 @@ public class editPanelPorcino extends javax.swing.JDialog {
         jLabel4.setText("Sexo");
         jPanel5.add(jLabel4);
 
+        sex.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         sex.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Macho", "Hembra" }));
         sex.setPreferredSize(new java.awt.Dimension(200, 40));
         jPanel5.add(sex);
@@ -179,10 +190,21 @@ public class editPanelPorcino extends javax.swing.JDialog {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void enviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enviarActionPerformed
-        
+        UtilsAnimales util = new UtilsAnimales();
+        this.fecha = fechaNacS.getText();
+        if(util.comprobarFecha(this.fecha)){
+            this.sexo = (String) sex.getSelectedItem();
+            this.vendi = vendido.isSelected();
+            this.raza = razaa.getText();
+            this.continuar = true;
+            this.setVisible(false);
+       }else{
+            JOptionPane.showMessageDialog(null, "Fecha mal formada");
+        }
     }//GEN-LAST:event_enviarActionPerformed
 
     /**
@@ -202,20 +224,21 @@ public class editPanelPorcino extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(editPanelPorcino.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditPanelPorcino.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(editPanelPorcino.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditPanelPorcino.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(editPanelPorcino.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditPanelPorcino.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(editPanelPorcino.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditPanelPorcino.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                editPanelPorcino dialog = new editPanelPorcino(new javax.swing.JFrame(), true, "", "", "", "", true);
+                EditPanelPorcino dialog = new EditPanelPorcino(new javax.swing.JFrame(), true, "", "", "", "", true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -230,7 +253,6 @@ public class editPanelPorcino extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton enviar;
     private javax.swing.JTextField fechaNacS;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -243,6 +265,7 @@ public class editPanelPorcino extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JTextField razaa;
     private javax.swing.JComboBox<String> sex;
+    private javax.swing.JLabel titulo;
     private javax.swing.JRadioButton vendido;
     // End of variables declaration//GEN-END:variables
 }
