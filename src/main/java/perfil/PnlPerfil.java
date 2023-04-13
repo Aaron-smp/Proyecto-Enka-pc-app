@@ -4,6 +4,20 @@
  */
 package perfil;
 
+import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.QueryDocumentSnapshot;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.UserRecord;
+import com.google.firebase.auth.UserRecord.CreateRequest;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import utils.UtilsPerfil;
+
 /**
  *
  * @author Aaron
@@ -13,8 +27,14 @@ public class PnlPerfil extends javax.swing.JPanel {
     /**
      * Creates new form PnlPerfil
      */
-    public PnlPerfil() {
+    private Firestore firestore;
+    private JFrame frame;
+    private String antiguoEmail;
+    
+    public PnlPerfil(Firestore firestore, JFrame frame) {
         initComponents();
+        this.firestore = firestore;
+        this.frame = frame;
     }
 
     /**
@@ -26,19 +46,433 @@ public class PnlPerfil extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel13 = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
+        email = new javax.swing.JTextField();
+        editarEmail = new javax.swing.JButton();
+        jPanel7 = new javax.swing.JPanel();
+        explotacion = new javax.swing.JTextField();
+        editarExplotacion = new javax.swing.JButton();
+        jPanel8 = new javax.swing.JPanel();
+        user = new javax.swing.JTextField();
+        editarGanadero = new javax.swing.JButton();
+        jPanel9 = new javax.swing.JPanel();
+        cambiarPass = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jPanel10 = new javax.swing.JPanel();
+        jPanel11 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tablaUsuarios = new javax.swing.JTable();
+        jPanel12 = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        jPanel14 = new javax.swing.JPanel();
+        addUser = new javax.swing.JButton();
+        jPanel17 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        emailUser = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        passUser = new javax.swing.JTextField();
+        jPanel15 = new javax.swing.JPanel();
+        eliminarUser = new javax.swing.JButton();
+
+        javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
+        jPanel13.setLayout(jPanel13Layout);
+        jPanel13Layout.setHorizontalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel13Layout.setVerticalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        setMinimumSize(new java.awt.Dimension(0, 15));
+
+        jPanel1.setMinimumSize(new java.awt.Dimension(329, 300));
+        jPanel1.setPreferredSize(new java.awt.Dimension(587, 300));
+        jPanel1.setLayout(new java.awt.BorderLayout());
+
+        jLabel1.setFont(new java.awt.Font("Poppins", 0, 30)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel1.setText("Administrador");
+        jLabel1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jLabel1.setPreferredSize(new java.awt.Dimension(212, 70));
+        jPanel1.add(jLabel1, java.awt.BorderLayout.NORTH);
+
+        jPanel3.setLayout(new java.awt.BorderLayout());
+
+        jPanel4.setPreferredSize(new java.awt.Dimension(150, 147));
+        jPanel4.setLayout(new java.awt.GridLayout(4, 1));
+
+        jLabel2.setFont(new java.awt.Font("Poppins", 0, 20)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel2.setText("Email:");
+        jPanel4.add(jLabel2);
+
+        jLabel3.setFont(new java.awt.Font("Poppins", 0, 20)); // NOI18N
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel3.setText("Explotación:");
+        jPanel4.add(jLabel3);
+
+        jLabel4.setFont(new java.awt.Font("Poppins", 0, 20)); // NOI18N
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel4.setText("Ganadero:");
+        jPanel4.add(jLabel4);
+
+        jLabel5.setFont(new java.awt.Font("Poppins", 0, 20)); // NOI18N
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel5.setText("Contraseña:");
+        jPanel4.add(jLabel5);
+
+        jPanel3.add(jPanel4, java.awt.BorderLayout.LINE_START);
+
+        jPanel5.setLayout(new java.awt.GridLayout(4, 1));
+
+        email.setEditable(false);
+        email.setFont(new java.awt.Font("Segoe UI", 0, 17)); // NOI18N
+        email.setPreferredSize(new java.awt.Dimension(350, 35));
+        jPanel6.add(email);
+
+        editarEmail.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        editarEmail.setText("Editar");
+        editarEmail.setMaximumSize(new java.awt.Dimension(120, 29));
+        editarEmail.setPreferredSize(new java.awt.Dimension(120, 30));
+        editarEmail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editarEmailActionPerformed(evt);
+            }
+        });
+        jPanel6.add(editarEmail);
+
+        jPanel5.add(jPanel6);
+
+        explotacion.setEditable(false);
+        explotacion.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        explotacion.setPreferredSize(new java.awt.Dimension(350, 35));
+        jPanel7.add(explotacion);
+
+        editarExplotacion.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        editarExplotacion.setText("Editar");
+        editarExplotacion.setPreferredSize(new java.awt.Dimension(120, 30));
+        editarExplotacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editarExplotacionActionPerformed(evt);
+            }
+        });
+        jPanel7.add(editarExplotacion);
+
+        jPanel5.add(jPanel7);
+
+        user.setEditable(false);
+        user.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        user.setPreferredSize(new java.awt.Dimension(350, 35));
+        jPanel8.add(user);
+
+        editarGanadero.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        editarGanadero.setText("Editar");
+        editarGanadero.setPreferredSize(new java.awt.Dimension(120, 30));
+        editarGanadero.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editarGanaderoActionPerformed(evt);
+            }
+        });
+        jPanel8.add(editarGanadero);
+
+        jPanel5.add(jPanel8);
+
+        cambiarPass.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
+        cambiarPass.setText("Cambiar contraseña");
+        cambiarPass.setPreferredSize(new java.awt.Dimension(230, 35));
+        cambiarPass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cambiarPassActionPerformed(evt);
+            }
+        });
+        jPanel9.add(cambiarPass);
+
+        jPanel5.add(jPanel9);
+
+        jPanel3.add(jPanel5, java.awt.BorderLayout.CENTER);
+
+        jPanel1.add(jPanel3, java.awt.BorderLayout.CENTER);
+
+        jPanel2.setLayout(new java.awt.BorderLayout());
+        jPanel2.add(jSeparator1, java.awt.BorderLayout.NORTH);
+
+        jPanel10.setLayout(new java.awt.BorderLayout());
+        jPanel2.add(jPanel10, java.awt.BorderLayout.LINE_END);
+
+        jPanel11.setLayout(new java.awt.BorderLayout());
+
+        tablaUsuarios.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        tablaUsuarios.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "UID Usuario", "Correo", "Contraseña"
+            }
+        ));
+        jScrollPane1.setViewportView(tablaUsuarios);
+
+        jPanel11.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        jPanel12.setLayout(new java.awt.BorderLayout());
+
+        jLabel8.setFont(new java.awt.Font("Poppins", 0, 30)); // NOI18N
+        jLabel8.setText("Usuarios escaner");
+        jLabel8.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jLabel8.setPreferredSize(new java.awt.Dimension(258, 90));
+        jPanel12.add(jLabel8, java.awt.BorderLayout.PAGE_START);
+
+        addUser.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        addUser.setText("Añadir");
+        addUser.setPreferredSize(new java.awt.Dimension(83, 29));
+        addUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addUserActionPerformed(evt);
+            }
+        });
+        jPanel14.add(addUser);
+
+        jPanel12.add(jPanel14, java.awt.BorderLayout.EAST);
+
+        jPanel17.setPreferredSize(new java.awt.Dimension(681, 60));
+
+        jLabel6.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        jLabel6.setText("Email");
+        jPanel17.add(jLabel6);
+
+        emailUser.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
+        emailUser.setPreferredSize(new java.awt.Dimension(250, 30));
+        jPanel17.add(emailUser);
+
+        jLabel7.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        jLabel7.setText("Contraseña");
+        jPanel17.add(jLabel7);
+
+        passUser.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
+        passUser.setPreferredSize(new java.awt.Dimension(250, 30));
+        jPanel17.add(passUser);
+
+        jPanel12.add(jPanel17, java.awt.BorderLayout.CENTER);
+
+        jPanel11.add(jPanel12, java.awt.BorderLayout.PAGE_START);
+
+        eliminarUser.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        eliminarUser.setText("Eliminar");
+        eliminarUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarUserActionPerformed(evt);
+            }
+        });
+        jPanel15.add(eliminarUser);
+
+        jPanel11.add(jPanel15, java.awt.BorderLayout.LINE_END);
+
+        jPanel2.add(jPanel11, java.awt.BorderLayout.CENTER);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 996, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 962, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 534, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 329, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void editarEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarEmailActionPerformed
+        if(editarEmail.getText().equals("Editar")){
+            email.setEditable(true);
+            editarEmail.setText("Continuar");
+            antiguoEmail = email.getText();
+        }else{
+            UtilsPerfil util = new UtilsPerfil();
+            if(!(email.getText().isEmpty() || email.getText().isBlank())){
+                if(util.validarCorreo(email.getText())){
+                    util.updateEmailAdmin(email.getText());
+                }else{
+                    email.setText(antiguoEmail);
+                    JOptionPane.showMessageDialog(null, "El correo introducido está mal formado.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }else{
+                JOptionPane.showMessageDialog(null, "Nuevo email vacio", "Aviso", 2);
+            }
+            editarEmail.setText("Editar");
+            email.setEditable(false);
+        }
+    }//GEN-LAST:event_editarEmailActionPerformed
 
+    private void editarExplotacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarExplotacionActionPerformed
+        if(editarExplotacion.getText().equals("Editar")){
+            explotacion.setEditable(true);
+            editarExplotacion.setText("Continuar");
+        }else{
+            UtilsPerfil util = new UtilsPerfil();
+            if(!(explotacion.getText().isEmpty() || explotacion.getText().isBlank())){
+                util.updateExplotacionAdmin(explotacion.getText());
+            }else{
+                JOptionPane.showMessageDialog(null, "Nueva explotacion esta vacia", "Aviso", 2);
+            }
+            editarExplotacion.setText("Editar");
+            explotacion.setEditable(false);
+        }
+    }//GEN-LAST:event_editarExplotacionActionPerformed
+
+    private void editarGanaderoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarGanaderoActionPerformed
+        if(editarGanadero.getText().equals("Editar")){
+            user.setEditable(true);
+            editarGanadero.setText("Continuar");
+        }else{
+            UtilsPerfil util = new UtilsPerfil();
+            if(!(user.getText().isEmpty() || user.getText().isBlank())){
+                util.updateGanaderoAdmin(user.getText());
+            }else{
+                JOptionPane.showMessageDialog(null, "Nuevo email vacio", "Aviso", 2);
+            }
+            editarGanadero.setText("Editar");
+            user.setEditable(false);
+        }
+    }//GEN-LAST:event_editarGanaderoActionPerformed
+
+    private void addUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addUserActionPerformed
+        UtilsPerfil util = new UtilsPerfil(this.firestore);
+        String user = emailUser.getText();
+        String contrasena = passUser.getText();
+        if(!(user == null || user.isEmpty()) && !(contrasena == null || contrasena.isEmpty())){
+            try {
+                CreateRequest request = new CreateRequest()
+                        .setEmail(user)
+                        .setPassword(contrasena);
+                UserRecord userRecord = FirebaseAuth.getInstance().createUser(request);
+                util.introducirUsuario(user, contrasena, userRecord.getUid());
+                refrescarUsuarios();
+                JOptionPane.showMessageDialog(null, "Usuario creado exitosamente: " + userRecord.getUid());
+            } catch (IllegalArgumentException e) {
+                JOptionPane.showMessageDialog(null, "El email esta mal formado o la contraseña debe tener al menos 6 caracteres una letra y un numero");
+            } catch (FirebaseAuthException ex) {
+                Logger.getLogger(PnlPerfil.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "El email ya esta registrado");
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Faltan datos para crear el usuario");
+        }
+        
+    }//GEN-LAST:event_addUserActionPerformed
+
+    private void eliminarUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarUserActionPerformed
+        UtilsPerfil util = new UtilsPerfil(firestore);
+        int fila = tablaUsuarios.getSelectedRow();
+        if(fila != -1){
+            int respuesta = JOptionPane.showOptionDialog(null, "¿Estas seguro de borrarlo?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+            if(respuesta == JOptionPane.YES_OPTION){
+                String uid = (String) tablaUsuarios.getValueAt(fila, 0);
+                util.borrarUsuario(uid);
+                System.out.println(uid);
+                FirebaseAuth auth = FirebaseAuth.getInstance();
+                try {
+                    auth.deleteUser(uid);
+                } catch (FirebaseAuthException ex) {
+                    Logger.getLogger(PnlPerfil.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                refrescarUsuarios();
+            }
+        }
+    }//GEN-LAST:event_eliminarUserActionPerformed
+
+    private void cambiarPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cambiarPassActionPerformed
+        UtilsPerfil util = new UtilsPerfil(firestore);
+        ConfirmarCambioContrasena ventana = new ConfirmarCambioContrasena(this.frame, true);
+        ventana.setVisible(true);
+        if(ventana.isContinuar()){
+           util.updateContrasenaAdmin(ventana.getNuevaContrasena());
+        }
+    }//GEN-LAST:event_cambiarPassActionPerformed
+
+    public void refrescarUsuarios(){
+        UtilsPerfil util = new UtilsPerfil(firestore);
+        List<QueryDocumentSnapshot> listaUsuarios = util.getUsuarios();
+        DefaultTableModel modeloTabla = (DefaultTableModel) tablaUsuarios.getModel();
+        modeloTabla.setRowCount(0);
+        for (QueryDocumentSnapshot documento : listaUsuarios) {
+            String email = documento.getString("email");
+            String contra = documento.getString("contraseña");
+            String uid = documento.getString("uid");
+            modeloTabla.addRow(new Object[] {uid, email, contra});
+        }
+        tablaUsuarios.setModel(modeloTabla);
+    }
+    
+    public void iniciarDatos(){
+        UtilsPerfil util = new UtilsPerfil(firestore);
+        String[] credenciales = util.getCredencialesAdmin();
+        if(credenciales != null){
+            email.setText(credenciales[0]);
+            explotacion.setText(credenciales[2]);
+            user.setText(credenciales[1]);
+        }
+        
+        
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addUser;
+    private javax.swing.JButton cambiarPass;
+    private javax.swing.JButton editarEmail;
+    private javax.swing.JButton editarExplotacion;
+    private javax.swing.JButton editarGanadero;
+    private javax.swing.JButton eliminarUser;
+    private javax.swing.JTextField email;
+    private javax.swing.JTextField emailUser;
+    private javax.swing.JTextField explotacion;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel14;
+    private javax.swing.JPanel jPanel15;
+    private javax.swing.JPanel jPanel17;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTextField passUser;
+    private javax.swing.JTable tablaUsuarios;
+    private javax.swing.JTextField user;
     // End of variables declaration//GEN-END:variables
 }

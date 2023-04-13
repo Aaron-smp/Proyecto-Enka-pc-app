@@ -26,19 +26,99 @@ public class PnlCorreo extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList<>();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        jButton6 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+
+        jPanel1.setLayout(new java.awt.BorderLayout());
+
+        jPanel3.setLayout(new java.awt.BorderLayout());
+
+        jLabel2.setFont(new java.awt.Font("Poppins", 0, 30)); // NOI18N
+        jLabel2.setText("Bandeja de entrada");
+        jPanel3.add(jLabel2, java.awt.BorderLayout.PAGE_START);
+
+        jList1.setFont(new java.awt.Font("Poppins", 0, 20)); // NOI18N
+        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Correo 1", "Correo 2", "Correo 3", "Correo 4" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane1.setViewportView(jList1);
+
+        jPanel3.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        jPanel1.add(jPanel3, java.awt.BorderLayout.CENTER);
+
+        jPanel2.setLayout(new java.awt.BorderLayout());
+
+        jLabel1.setFont(new java.awt.Font("Poppins", 0, 30)); // NOI18N
+        jLabel1.setText("Acciones");
+        jPanel2.add(jLabel1, java.awt.BorderLayout.NORTH);
+
+        jPanel4.setPreferredSize(new java.awt.Dimension(866, 50));
+        jPanel4.setLayout(new java.awt.GridLayout(1, 5));
+
+        jButton6.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        jButton6.setText("Nuevo correo");
+        jPanel4.add(jButton6);
+
+        jButton2.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        jButton2.setText("Leer correo");
+        jPanel4.add(jButton2);
+
+        jButton1.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        jButton1.setText("Responder");
+        jPanel4.add(jButton1);
+
+        jButton3.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        jButton3.setText("Reenviar");
+        jPanel4.add(jButton3);
+
+        jButton4.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        jButton4.setText("Eliminar");
+        jPanel4.add(jButton4);
+
+        jPanel2.add(jPanel4, java.awt.BorderLayout.CENTER);
+
+        jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_END);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 547, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JList<String> jList1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

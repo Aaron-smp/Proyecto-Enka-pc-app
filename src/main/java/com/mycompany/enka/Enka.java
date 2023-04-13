@@ -86,7 +86,9 @@ public class Enka extends javax.swing.JFrame {
         PnlInicio pnlIni = new PnlInicio(nombres);
         PnlVentas pnlVent = new PnlVentas();
         PnlCorreo pnlCorre = new PnlCorreo();
-        PnlPerfil pnlPerf = new PnlPerfil();
+        PnlPerfil pnlPerf = new PnlPerfil(this.firestore, this);
+        pnlPerf.iniciarDatos();
+        pnlPerf.refrescarUsuarios();
         pantallaPrincipal.add(pnlIni, "inicio");
         pantallaPrincipal.add(pnlAni, "animales");
         pantallaPrincipal.add(pnlVent, "ventas");
@@ -218,6 +220,9 @@ public class Enka extends javax.swing.JFrame {
 
         pnlVentas.setBackground(new java.awt.Color(90, 90, 90));
         pnlVentas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pnlVentasMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 pnlVentasMouseEntered(evt);
             }
@@ -241,6 +246,9 @@ public class Enka extends javax.swing.JFrame {
 
         pnlCorreo.setBackground(new java.awt.Color(90, 90, 90));
         pnlCorreo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pnlCorreoMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 pnlCorreoMouseEntered(evt);
             }
@@ -264,6 +272,9 @@ public class Enka extends javax.swing.JFrame {
 
         pnlPerfil.setBackground(new java.awt.Color(90, 90, 90));
         pnlPerfil.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pnlPerfilMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 pnlPerfilMouseEntered(evt);
             }
@@ -543,6 +554,24 @@ public class Enka extends javax.swing.JFrame {
             pantallaCom = false;
         }
     }//GEN-LAST:event_jMenuItem9ActionPerformed
+
+    private void pnlPerfilMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlPerfilMouseClicked
+        CardLayout card = (CardLayout) pantallaPrincipal.getLayout();
+        card.show(pantallaPrincipal, "perfil");
+        this.setTitle("ENKA | Perfil");
+    }//GEN-LAST:event_pnlPerfilMouseClicked
+
+    private void pnlCorreoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlCorreoMouseClicked
+        CardLayout card = (CardLayout) pantallaPrincipal.getLayout();
+        card.show(pantallaPrincipal, "correo");
+        this.setTitle("ENKA | Correo");
+    }//GEN-LAST:event_pnlCorreoMouseClicked
+
+    private void pnlVentasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlVentasMouseClicked
+        CardLayout card = (CardLayout) pantallaPrincipal.getLayout();
+        card.show(pantallaPrincipal, "ventas");
+        this.setTitle("ENKA | Ventas");
+    }//GEN-LAST:event_pnlVentasMouseClicked
     
     public void crearConexion(){
         try {

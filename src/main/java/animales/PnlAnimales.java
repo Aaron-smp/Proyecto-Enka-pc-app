@@ -206,7 +206,7 @@ public class PnlAnimales extends javax.swing.JPanel {
         jPanel3.add(jPanel6, java.awt.BorderLayout.CENTER);
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel10.setText("Bovino");
         jPanel3.add(jLabel10, java.awt.BorderLayout.NORTH);
 
@@ -268,7 +268,7 @@ public class PnlAnimales extends javax.swing.JPanel {
         jPanel4.add(jSeparator2, java.awt.BorderLayout.SOUTH);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel2.setText("Porcino");
         jPanel4.add(jLabel2, java.awt.BorderLayout.NORTH);
 
@@ -330,7 +330,7 @@ public class PnlAnimales extends javax.swing.JPanel {
         jPanel5.add(jPanel8, java.awt.BorderLayout.CENTER);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel3.setText("Aves      ");
         jPanel5.add(jLabel3, java.awt.BorderLayout.NORTH);
 
@@ -489,28 +489,34 @@ public class PnlAnimales extends javax.swing.JPanel {
 
     private void borrarRowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrarRowActionPerformed
         UtilsAnimales util = new UtilsAnimales(firestore);
-        int respuesta = JOptionPane.showOptionDialog(null, "¿Estas seguro de borrarlo?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-        if(respuesta == JOptionPane.YES_OPTION){
             if(tablasPane.getSelectedIndex() == 0){
-                int columna = tablaBovino.getSelectedColumn();
-                int fila = tablaBovino.getSelectedRow();
-                String id = (String) tablaBovino.getValueAt(fila, 0);
-                util.borrarBovino(id);
-                refrescarBovino();
+                int respuesta = JOptionPane.showOptionDialog(null, "¿Estas seguro de borrarlo?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+                if(respuesta == JOptionPane.YES_OPTION){
+                    int columna = tablaBovino.getSelectedColumn();
+                    int fila = tablaBovino.getSelectedRow();
+                    String id = (String) tablaBovino.getValueAt(fila, 0);
+                    util.borrarBovino(id);
+                    refrescarBovino();
+                }
             }else if(tablasPane.getSelectedIndex() == 1){
-                int columna = tablaPorcino.getSelectedColumn();
-                int fila = tablaPorcino.getSelectedRow();
-                String id = (String) tablaPorcino.getValueAt(fila, 0);
-                util.borrarPorcino(id);
-                refrescarPorcino();
-                System.out.println(id);
+                int respuesta = JOptionPane.showOptionDialog(null, "¿Estas seguro de borrarlo?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+                if(respuesta == JOptionPane.YES_OPTION){
+                    int columna = tablaPorcino.getSelectedColumn();
+                    int fila = tablaPorcino.getSelectedRow();
+                    String id = (String) tablaPorcino.getValueAt(fila, 0);
+                    util.borrarPorcino(id);
+                    refrescarPorcino();
+                    System.out.println(id);
+                }
             }else{
-                int fila = tablaAves.getSelectedRow();
-                long lote = (Long) tablaAves.getValueAt(fila, 0);
-                util.borrarAve(lote);
-                refrescarAves();
+                int respuesta = JOptionPane.showOptionDialog(null, "¿Estas seguro de borrarlo?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+                if(respuesta == JOptionPane.YES_OPTION){
+                    int fila = tablaAves.getSelectedRow();
+                    long lote = (Long) tablaAves.getValueAt(fila, 0);
+                    util.borrarAve(lote);
+                    refrescarAves();
+                }
             }
-        }
     }//GEN-LAST:event_borrarRowActionPerformed
 
     private void addBovinoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBovinoActionPerformed
