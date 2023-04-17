@@ -55,6 +55,7 @@ public class PnlPerfil extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         email = new javax.swing.JTextField();
@@ -67,6 +68,9 @@ public class PnlPerfil extends javax.swing.JPanel {
         editarGanadero = new javax.swing.JButton();
         jPanel9 = new javax.swing.JPanel();
         cambiarPass = new javax.swing.JButton();
+        jPanel16 = new javax.swing.JPanel();
+        passMail = new javax.swing.JTextField();
+        editarPassMail = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
         jPanel10 = new javax.swing.JPanel();
@@ -111,8 +115,8 @@ public class PnlPerfil extends javax.swing.JPanel {
 
         jPanel3.setLayout(new java.awt.BorderLayout());
 
-        jPanel4.setPreferredSize(new java.awt.Dimension(150, 147));
-        jPanel4.setLayout(new java.awt.GridLayout(4, 1));
+        jPanel4.setPreferredSize(new java.awt.Dimension(210, 147));
+        jPanel4.setLayout(new java.awt.GridLayout(5, 1));
 
         jLabel2.setFont(new java.awt.Font("Poppins", 0, 20)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -134,9 +138,14 @@ public class PnlPerfil extends javax.swing.JPanel {
         jLabel5.setText("Contraseña:");
         jPanel4.add(jLabel5);
 
+        jLabel9.setFont(new java.awt.Font("Poppins", 0, 20)); // NOI18N
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel9.setText("Contraseña correo:");
+        jPanel4.add(jLabel9);
+
         jPanel3.add(jPanel4, java.awt.BorderLayout.LINE_START);
 
-        jPanel5.setLayout(new java.awt.GridLayout(4, 1));
+        jPanel5.setLayout(new java.awt.GridLayout(5, 1));
 
         email.setEditable(false);
         email.setFont(new java.awt.Font("Segoe UI", 0, 17)); // NOI18N
@@ -201,6 +210,23 @@ public class PnlPerfil extends javax.swing.JPanel {
         jPanel9.add(cambiarPass);
 
         jPanel5.add(jPanel9);
+
+        passMail.setEditable(false);
+        passMail.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        passMail.setPreferredSize(new java.awt.Dimension(350, 35));
+        jPanel16.add(passMail);
+
+        editarPassMail.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        editarPassMail.setText("Editar");
+        editarPassMail.setPreferredSize(new java.awt.Dimension(120, 30));
+        editarPassMail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editarPassMailActionPerformed(evt);
+            }
+        });
+        jPanel16.add(editarPassMail);
+
+        jPanel5.add(jPanel16);
 
         jPanel3.add(jPanel5, java.awt.BorderLayout.CENTER);
 
@@ -295,9 +321,9 @@ public class PnlPerfil extends javax.swing.JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 329, Short.MAX_VALUE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -409,6 +435,22 @@ public class PnlPerfil extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_cambiarPassActionPerformed
 
+    private void editarPassMailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarPassMailActionPerformed
+       if(editarPassMail.getText().equals("Editar")){
+            passMail.setEditable(true);
+            editarPassMail.setText("Continuar");
+        }else{
+            UtilsPerfil util = new UtilsPerfil();
+            if(!(passMail.getText().isEmpty() || passMail.getText().isBlank())){
+                util.updatePassMailAdmin(passMail.getText());
+            }else{
+                JOptionPane.showMessageDialog(null, "Nuevo email vacio", "Aviso", 2);
+            }
+            editarPassMail.setText("Editar");
+            passMail.setEditable(false);
+        }
+    }//GEN-LAST:event_editarPassMailActionPerformed
+
     public void refrescarUsuarios(){
         UtilsPerfil util = new UtilsPerfil(firestore);
         List<QueryDocumentSnapshot> listaUsuarios = util.getUsuarios();
@@ -430,6 +472,9 @@ public class PnlPerfil extends javax.swing.JPanel {
             email.setText(credenciales[0]);
             explotacion.setText(credenciales[2]);
             user.setText(credenciales[1]);
+            if(credenciales[3] != null){
+                passMail.setText(credenciales[3]);
+            }
         }
         
         
@@ -441,6 +486,7 @@ public class PnlPerfil extends javax.swing.JPanel {
     private javax.swing.JButton editarEmail;
     private javax.swing.JButton editarExplotacion;
     private javax.swing.JButton editarGanadero;
+    private javax.swing.JButton editarPassMail;
     private javax.swing.JButton eliminarUser;
     private javax.swing.JTextField email;
     private javax.swing.JTextField emailUser;
@@ -453,6 +499,7 @@ public class PnlPerfil extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -460,6 +507,7 @@ public class PnlPerfil extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
+    private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -471,6 +519,7 @@ public class PnlPerfil extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTextField passMail;
     private javax.swing.JTextField passUser;
     private javax.swing.JTable tablaUsuarios;
     private javax.swing.JTextField user;

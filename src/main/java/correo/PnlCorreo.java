@@ -4,6 +4,9 @@
  */
 package correo;
 
+import com.google.cloud.firestore.Firestore;
+import java.awt.CardLayout;
+
 /**
  *
  * @author Aaron
@@ -13,8 +16,20 @@ public class PnlCorreo extends javax.swing.JPanel {
     /**
      * Creates new form PnlCorreo
      */
-    public PnlCorreo() {
+    
+    private Firestore firestore;
+    
+    public PnlCorreo(Firestore firestore) {
         initComponents();
+        this.firestore = firestore;
+        BandejaDeSalida entrada = new BandejaDeSalida();
+        PnlAjustesCorreo ajustes = new PnlAjustesCorreo(firestore);
+        cardLayout.add(panelEntrada, "entrada");
+        cardLayout.add(entrada, "salida");
+        cardLayout.add(ajustes, "ajustes");
+        cardLayout.add(new PnlEnviarCorreo(this.firestore), "correo");
+        
+        
     }
 
     /**
@@ -28,9 +43,13 @@ public class PnlCorreo extends javax.swing.JPanel {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        cardLayout = new javax.swing.JPanel();
+        panelEntrada = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
+        jPanel5 = new javax.swing.JPanel();
+        bandeja = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
+        jButton5 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
@@ -39,14 +58,13 @@ public class PnlCorreo extends javax.swing.JPanel {
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         jPanel3.setLayout(new java.awt.BorderLayout());
 
-        jLabel2.setFont(new java.awt.Font("Poppins", 0, 30)); // NOI18N
-        jLabel2.setText("Bandeja de entrada");
-        jPanel3.add(jLabel2, java.awt.BorderLayout.PAGE_START);
+        cardLayout.setLayout(new java.awt.CardLayout());
 
         jList1.setFont(new java.awt.Font("Poppins", 0, 20)); // NOI18N
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
@@ -54,12 +72,36 @@ public class PnlCorreo extends javax.swing.JPanel {
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane1.setViewportView(jList1);
+        panelEntrada.setViewportView(jList1);
 
-        jPanel3.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        cardLayout.add(panelEntrada, "card2");
+
+        jPanel3.add(cardLayout, java.awt.BorderLayout.CENTER);
+
+        jPanel5.setLayout(new java.awt.BorderLayout());
+
+        bandeja.setFont(new java.awt.Font("Poppins", 0, 30)); // NOI18N
+        bandeja.setText("Bandeja de entrada");
+        jPanel5.add(bandeja, java.awt.BorderLayout.CENTER);
+
+        jPanel6.setLayout(new java.awt.BorderLayout());
+
+        jButton5.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        jButton5.setText("Cambiar bandeja");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+        jPanel6.add(jButton5, java.awt.BorderLayout.CENTER);
+
+        jPanel5.add(jPanel6, java.awt.BorderLayout.EAST);
+
+        jPanel3.add(jPanel5, java.awt.BorderLayout.NORTH);
 
         jPanel1.add(jPanel3, java.awt.BorderLayout.CENTER);
 
+        jPanel2.setPreferredSize(new java.awt.Dimension(866, 130));
         jPanel2.setLayout(new java.awt.BorderLayout());
 
         jLabel1.setFont(new java.awt.Font("Poppins", 0, 30)); // NOI18N
@@ -67,10 +109,15 @@ public class PnlCorreo extends javax.swing.JPanel {
         jPanel2.add(jLabel1, java.awt.BorderLayout.NORTH);
 
         jPanel4.setPreferredSize(new java.awt.Dimension(866, 50));
-        jPanel4.setLayout(new java.awt.GridLayout(1, 5));
+        jPanel4.setLayout(new java.awt.GridLayout(1, 6));
 
         jButton6.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
         jButton6.setText("Nuevo correo");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
         jPanel4.add(jButton6);
 
         jButton2.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
@@ -89,6 +136,15 @@ public class PnlCorreo extends javax.swing.JPanel {
         jButton4.setText("Eliminar");
         jPanel4.add(jButton4);
 
+        jButton7.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        jButton7.setText("Ajustes");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+        jPanel4.add(jButton7);
+
         jPanel2.add(jPanel4, java.awt.BorderLayout.CENTER);
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_END);
@@ -97,7 +153,7 @@ public class PnlCorreo extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 918, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -105,20 +161,54 @@ public class PnlCorreo extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        if(bandeja.getText().equals("Bandeja de salida")){
+            bandeja.setText("Bandeja de entrada");
+            CardLayout card = (CardLayout) cardLayout.getLayout();
+            card.show(cardLayout, "entrada");
+            
+        }else{
+            bandeja.setText("Bandeja de salida");
+            CardLayout card = (CardLayout) cardLayout.getLayout();
+            card.show(cardLayout, "salida");
+        
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        if(!bandeja.getText().equals("Ajustes del servidor")){
+            bandeja.setText("Ajustes del servidor");
+            CardLayout card = (CardLayout) cardLayout.getLayout();
+            card.show(cardLayout, "ajustes");
+            
+        }
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        bandeja.setText("Enviar correo");
+        CardLayout card = (CardLayout) cardLayout.getLayout();
+        card.show(cardLayout, "correo");
+    }//GEN-LAST:event_jButton6ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel bandeja;
+    private javax.swing.JPanel cardLayout;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JScrollPane panelEntrada;
     // End of variables declaration//GEN-END:variables
 }

@@ -98,7 +98,7 @@
       <Dimension value="[600, 400]"/>
     </Property>
     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[1200, 640]"/>
+      <Dimension value="[1200, 670]"/>
     </Property>
   </Properties>
   <SyntheticProperties>

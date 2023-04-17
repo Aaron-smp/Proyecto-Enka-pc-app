@@ -85,7 +85,7 @@ public class Enka extends javax.swing.JFrame {
         String[] nombres = datosPerf();
         PnlInicio pnlIni = new PnlInicio(nombres);
         PnlVentas pnlVent = new PnlVentas();
-        PnlCorreo pnlCorre = new PnlCorreo();
+        PnlCorreo pnlCorre = new PnlCorreo(this.firestore);
         PnlPerfil pnlPerf = new PnlPerfil(this.firestore, this);
         pnlPerf.iniciarDatos();
         pnlPerf.refrescarUsuarios();
@@ -146,7 +146,7 @@ public class Enka extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ENKA | Inicio");
         setMinimumSize(new java.awt.Dimension(600, 400));
-        setPreferredSize(new java.awt.Dimension(1200, 640));
+        setPreferredSize(new java.awt.Dimension(1200, 670));
 
         contenedor.setMinimumSize(new java.awt.Dimension(206, 500));
         contenedor.setPreferredSize(new java.awt.Dimension(900, 900));

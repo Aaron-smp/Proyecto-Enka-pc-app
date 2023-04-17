@@ -104,7 +104,7 @@ public class UtilsPerfil {
     }
     
     public String[] getCredencialesAdmin(){
-        String[] credenciales = new String[3];
+        String[] credenciales = new String[4];
         try {
             CollectionReference usuariosRef = firestore.collection("empresa");
             Query usersQuery = usuariosRef;
@@ -113,9 +113,14 @@ public class UtilsPerfil {
             String email = queryResult.getDocuments().get(0).getString("email");
             String ganadero = queryResult.getDocuments().get(0).getString("ganadero");
             String explotacion = queryResult.getDocuments().get(0).getString("explotacion");
+            String passwdMail = null;
+            passwdMail = queryResult.getDocuments().get(0).getString("contraseña mail");
             credenciales[0] = email;
             credenciales[1] = ganadero;
             credenciales[2] = explotacion;
+            if(passwdMail != null && !passwdMail.isEmpty()){
+                credenciales[3] = passwdMail;
+            }
         } catch (InterruptedException ex) {
             Logger.getLogger(UtilsPerfil.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ExecutionException ex) {
@@ -145,6 +150,14 @@ public class UtilsPerfil {
         DocumentReference docRef = db.collection("empresa").document("administrador");
         HashMap<String, Object> map = new HashMap();
         map.put("ganadero", nuevoGanadero);
+        docRef.update(map);
+    }
+    
+    public void updatePassMailAdmin(String nuevaContra){
+        Firestore db = FirestoreClient.getFirestore();
+        DocumentReference docRef = db.collection("empresa").document("administrador");
+        HashMap<String, Object> map = new HashMap();
+        map.put("contraseña mail", nuevaContra);
         docRef.update(map);
     }
     
