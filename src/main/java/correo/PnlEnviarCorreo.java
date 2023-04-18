@@ -14,6 +14,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import utils.UtilsCorreo;
+import utils.UtilsPerfil;
 
 /**
  *
@@ -86,6 +87,7 @@ public class PnlEnviarCorreo extends javax.swing.JPanel {
         jLabel2.setText("Cuerpo");
         jPanel3.add(jLabel2, java.awt.BorderLayout.NORTH);
 
+        contenido.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
         jScrollPane2.setViewportView(contenido);
 
         jPanel3.add(jScrollPane2, java.awt.BorderLayout.CENTER);
@@ -170,7 +172,8 @@ public class PnlEnviarCorreo extends javax.swing.JPanel {
             public void run() {
                 UtilsCorreo util = new UtilsCorreo(firestore);
                 EnviarCorreo correo = new EnviarCorreo(destinatario.getText(), asunto.getText(),
-                        contenido.getText(), util.getPuertoSmtp(), util.getServidorSmtp());
+                        contenido.getText(), util.getPuertoSmtp(),
+                        util.getServidorSmtp(), util.getEmail(), util.getContraseña());
                 correo.crearEmailConFichero(archivoAEnviar);
                 correo.enviarEmail();
                 JOptionPane.showMessageDialog(null, "Correo enviado", "Información", INFORMATION_MESSAGE);

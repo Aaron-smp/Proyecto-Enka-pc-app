@@ -57,20 +57,20 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
-                    <Component class="javax.swing.JList" name="jList1">
+                    <Component class="javax.swing.JList" name="listaEntrada">
                       <Properties>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Poppins" size="20" style="0"/>
                         </Property>
                         <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-                          <StringArray count="4">
-                            <StringItem index="0" value="Correo 1"/>
-                            <StringItem index="1" value="Correo 2"/>
-                            <StringItem index="2" value="Correo 3"/>
-                            <StringItem index="3" value="Correo 4"/>
+                          <StringArray count="1">
+                            <StringItem index="0" value="Cargando..."/>
                           </StringArray>
                         </Property>
                       </Properties>
+                      <Events>
+                        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="listaEntradaMouseClicked"/>
+                      </Events>
                       <AuxValues>
                         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                       </AuxValues>
@@ -172,7 +172,7 @@
               </Constraints>
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
-                <Property name="columns" type="int" value="6"/>
+                <Property name="columns" type="int" value="5"/>
                 <Property name="rows" type="int" value="1"/>
               </Layout>
               <SubComponents>
@@ -200,15 +200,7 @@
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Poppins" size="18" style="0"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="Responder"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JButton" name="jButton3">
-                  <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Poppins" size="18" style="0"/>
-                    </Property>
-                    <Property name="text" type="java.lang.String" value="Reenviar"/>
+                    <Property name="text" type="java.lang.String" value="Refrescar"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JButton" name="jButton4">

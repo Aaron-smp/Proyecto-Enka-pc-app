@@ -6,6 +6,13 @@ package correo;
 
 import com.google.cloud.firestore.Firestore;
 import java.awt.CardLayout;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.mail.MessagingException;
+import javax.swing.DefaultListModel;
+import utils.UtilsCorreo;
 
 /**
  *
@@ -18,18 +25,28 @@ public class PnlCorreo extends javax.swing.JPanel {
      */
     
     private Firestore firestore;
+    private ArrayList<Email> emails;
     
     public PnlCorreo(Firestore firestore) {
         initComponents();
         this.firestore = firestore;
+        UtilsCorreo util = new UtilsCorreo(firestore);
         BandejaDeSalida entrada = new BandejaDeSalida();
         PnlAjustesCorreo ajustes = new PnlAjustesCorreo(firestore);
         cardLayout.add(panelEntrada, "entrada");
         cardLayout.add(entrada, "salida");
         cardLayout.add(ajustes, "ajustes");
         cardLayout.add(new PnlEnviarCorreo(this.firestore), "correo");
-        
-        
+        if(!util.getContraseña().isBlank() && !util.getEmail().isBlank()){
+            Thread h1 = new Thread(new Runnable(){
+            @Override
+            public void run() {
+                refrescarListaCorreos();
+            }
+            
+        });
+        h1.start();
+        }
     }
 
     /**
@@ -45,7 +62,7 @@ public class PnlCorreo extends javax.swing.JPanel {
         jPanel3 = new javax.swing.JPanel();
         cardLayout = new javax.swing.JPanel();
         panelEntrada = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        listaEntrada = new javax.swing.JList<>();
         jPanel5 = new javax.swing.JPanel();
         bandeja = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
@@ -56,7 +73,6 @@ public class PnlCorreo extends javax.swing.JPanel {
         jButton6 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
 
@@ -66,13 +82,18 @@ public class PnlCorreo extends javax.swing.JPanel {
 
         cardLayout.setLayout(new java.awt.CardLayout());
 
-        jList1.setFont(new java.awt.Font("Poppins", 0, 20)); // NOI18N
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Correo 1", "Correo 2", "Correo 3", "Correo 4" };
+        listaEntrada.setFont(new java.awt.Font("Poppins", 0, 20)); // NOI18N
+        listaEntrada.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Cargando..." };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        panelEntrada.setViewportView(jList1);
+        listaEntrada.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                listaEntradaMouseClicked(evt);
+            }
+        });
+        panelEntrada.setViewportView(listaEntrada);
 
         cardLayout.add(panelEntrada, "card2");
 
@@ -109,7 +130,7 @@ public class PnlCorreo extends javax.swing.JPanel {
         jPanel2.add(jLabel1, java.awt.BorderLayout.NORTH);
 
         jPanel4.setPreferredSize(new java.awt.Dimension(866, 50));
-        jPanel4.setLayout(new java.awt.GridLayout(1, 6));
+        jPanel4.setLayout(new java.awt.GridLayout(1, 5));
 
         jButton6.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
         jButton6.setText("Nuevo correo");
@@ -125,12 +146,8 @@ public class PnlCorreo extends javax.swing.JPanel {
         jPanel4.add(jButton2);
 
         jButton1.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
-        jButton1.setText("Responder");
+        jButton1.setText("Refrescar");
         jPanel4.add(jButton1);
-
-        jButton3.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
-        jButton3.setText("Reenviar");
-        jPanel4.add(jButton3);
 
         jButton4.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
         jButton4.setText("Eliminar");
@@ -190,25 +207,63 @@ public class PnlCorreo extends javax.swing.JPanel {
         card.show(cardLayout, "correo");
     }//GEN-LAST:event_jButton6ActionPerformed
 
+    private void listaEntradaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaEntradaMouseClicked
+        if (evt.getClickCount() == 2) {
+            int indice = listaEntrada.locationToIndex(evt.getPoint());
+            Email email = emails.get(indice);
+            String valor = listaEntrada.getModel().getElementAt(indice);
+            System.out.println("Valor seleccionado: " + valor);
+        }
+    }//GEN-LAST:event_listaEntradaMouseClicked
+
+    private void refrescarListaCorreos(){
+        EnviarCorreo recibirCorreos = new EnviarCorreo();
+        try {
+            emails = recibirCorreos.leerCorreo();
+        } catch (MessagingException ex) {
+            Logger.getLogger(PnlCorreo.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(PnlCorreo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        DefaultListModel<String> model = new DefaultListModel<>();
+        for(int i = 0; i < emails.size(); i++){
+            String remitente = emails.get(i).getRemitentePrincipal();
+            String asunto = emails.get(i).getAsunto();
+            model.addElement(obtenerRemitente(remitente) + " | Asunto: " + asunto);
+        }
+        listaEntrada.setModel(model);
+    }
+    
+    public String obtenerRemitente(String str) {
+        int indiceInicio = str.indexOf("<");
+        int indiceFin = str.indexOf(">");
+        if (indiceInicio == -1 || indiceFin == -1) {
+            return str;
+        }
+        
+        String correo = str.substring(indiceInicio + 1, indiceFin);
+        String remitente = str.substring(0, indiceInicio).trim();
+
+        return remitente;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel bandeja;
     private javax.swing.JPanel cardLayout;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JList<String> listaEntrada;
     private javax.swing.JScrollPane panelEntrada;
     // End of variables declaration//GEN-END:variables
 }

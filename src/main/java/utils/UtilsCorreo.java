@@ -75,4 +75,36 @@ public class UtilsCorreo {
         }
         return puerto;
     }
+    
+    public String getEmail(){
+        String email = "";
+        try {
+            CollectionReference usuariosRef = firestore.collection("empresa");
+            Query usersQuery = usuariosRef;
+            ApiFuture<QuerySnapshot> querySnapshot = usersQuery.get();
+            QuerySnapshot queryResult = querySnapshot.get();
+            email = queryResult.getDocuments().get(0).getString("email");
+        } catch (InterruptedException ex) {
+            Logger.getLogger(UtilsPerfil.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ExecutionException ex) {
+            Logger.getLogger(UtilsPerfil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return email;
+    }
+    
+    public String getContraseña(){
+        String contrasenia = "";
+        try {
+            CollectionReference usuariosRef = firestore.collection("empresa");
+            Query usersQuery = usuariosRef;
+            ApiFuture<QuerySnapshot> querySnapshot = usersQuery.get();
+            QuerySnapshot queryResult = querySnapshot.get();
+            contrasenia = queryResult.getDocuments().get(0).getString("contraseña mail");
+        } catch (InterruptedException ex) {
+            Logger.getLogger(UtilsPerfil.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ExecutionException ex) {
+            Logger.getLogger(UtilsPerfil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return contrasenia;
+    }
 }

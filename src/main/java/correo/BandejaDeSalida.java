@@ -4,6 +4,8 @@
  */
 package correo;
 
+import javax.swing.JList;
+
 /**
  *
  * @author Aaron
@@ -29,7 +31,7 @@ public class BandejaDeSalida extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jList2 = new javax.swing.JList<>();
+        listaSalida = new javax.swing.JList<>();
 
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -38,13 +40,13 @@ public class BandejaDeSalida extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(jList1);
 
-        jList2.setFont(new java.awt.Font("Poppins", 0, 20)); // NOI18N
-        jList2.setModel(new javax.swing.AbstractListModel<String>() {
+        listaSalida.setFont(new java.awt.Font("Poppins", 0, 20)); // NOI18N
+        listaSalida.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Envio 1", "Envio 2", "Envio 3", "Envio 4" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane2.setViewportView(jList2);
+        jScrollPane2.setViewportView(listaSalida);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -57,12 +59,19 @@ public class BandejaDeSalida extends javax.swing.JPanel {
             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 457, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
+    
+    public JList<String> getListaSalida() {
+        return listaSalida;
+    }
 
+    public void setListaSalida(JList<String> listaSalida) {
+        this.listaSalida = listaSalida;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList<String> jList1;
-    private javax.swing.JList<String> jList2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JList<String> listaSalida;
     // End of variables declaration//GEN-END:variables
 }

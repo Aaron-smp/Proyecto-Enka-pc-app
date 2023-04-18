@@ -4,7 +4,12 @@
  */
 package correo;
 
+import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.WriteResult;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.JOptionPane;
 import utils.UtilsCorreo;
 
@@ -22,9 +27,10 @@ public class PnlAjustesCorreo extends javax.swing.JPanel {
     
     public PnlAjustesCorreo(Firestore firestore) {
         initComponents();
+        this.firestore = firestore;
         UtilsCorreo util = new UtilsCorreo(firestore);
-        servidor.setText(util.getServidorSmtp());
-        puerto.setText(util.getPuertoSmtp());
+        servidor.setText(util.getServidorSmtp().isBlank() ? "smtp.gmail.com" : util.getServidorSmtp());
+        puerto.setText(util.getPuertoSmtp().isBlank() ? "587" : util.getPuertoSmtp());
     }
 
     /**

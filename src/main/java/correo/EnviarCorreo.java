@@ -5,22 +5,31 @@
 package correo;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 import javax.mail.BodyPart;
+import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.NoSuchProviderException;
 import javax.mail.Session;
+import javax.mail.Store;
 import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.mail.search.ComparisonTerm;
+import javax.mail.search.ReceivedDateTerm;
+import javax.mail.search.SearchTerm;
 
 /**
  *
@@ -40,13 +49,18 @@ public class EnviarCorreo {
     private String puerto;
     private String servidorSmtp;
     
-    public EnviarCorreo(String emailTo, String subject, String content, String puerto, String servidorSmtp) {
+    public EnviarCorreo(String emailTo, String subject, String content, String puerto, String servidorSmtp, String emailFrom, String password) {
         this.emailTo = emailTo;
         this.subject = subject;
         this.content = content;
         this.puerto = puerto;
         this.servidorSmtp = servidorSmtp;
+        this.emailFrom = emailFrom;
+        this.passwordFrom = password;
         properties = new Properties();
+    }
+
+    public EnviarCorreo() {
     }
     
     //smtp.gmail.com servidor de google puerto 587 smtp-relay.gmail.com mas seguro
@@ -130,5 +144,40 @@ public class EnviarCorreo {
             Logger.getLogger(EnviarCorreo.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
+    public ArrayList<Email> leerCorreo() throws NoSuchProviderException, MessagingException, IOException {
+        
+        ArrayList<Email> emails = new ArrayList();
+        Properties prop = new Properties();
+        prop.put("mail.store.protocol", "imaps");
+        
+        Store store = Session.getInstance(prop).getStore();
+        store.connect("imap.gmail.com", emailFrom, passwordFrom);
+        
+        Folder inbox = store.getFolder("INBOX");
+        inbox.open(Folder.READ_WRITE);
+        
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.DAY_OF_YEAR, -7);
+        Date fechaHaceUnaSemana = calendar.getTime();
+        
+        SearchTerm searchTerm = new ReceivedDateTerm(ComparisonTerm.GE, fechaHaceUnaSemana);
+        Message[] mensajes = inbox.search(searchTerm);
+        
+        for(int i = mensajes.length-1; i >= 0; i--){
+            Object messageContent = mensajes[i].getContent();
+            Email mail = new Email();
+            mail.setRemitentePrincipal(mensajes[i].getFrom()[0].toString());
+            mail.setRemitentes(mensajes[i].getFrom());
+            mail.setFechaRecibido(mensajes[i].getReceivedDate().toString());
+            mail.setAsunto(mensajes[i].getSubject());
+            mail.setCuerpo(mensajes[i].getContent().toString());
+            emails.add(mail);
+        }
+        
+        inbox.close();
+        store.close();
+        return emails;
+    }
 }
