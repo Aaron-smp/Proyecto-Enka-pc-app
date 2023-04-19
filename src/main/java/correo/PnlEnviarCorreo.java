@@ -27,6 +27,7 @@ public class PnlEnviarCorreo extends javax.swing.JPanel {
      */
     private File archivoAEnviar;
     private Firestore firestore;
+    public Email email;
     
     public PnlEnviarCorreo(Firestore firestore) {
         initComponents();

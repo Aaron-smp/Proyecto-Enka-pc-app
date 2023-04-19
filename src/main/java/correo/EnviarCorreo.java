@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 import javax.mail.BodyPart;
+import javax.mail.Flags;
 import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -28,6 +29,7 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.search.ComparisonTerm;
+import javax.mail.search.MessageNumberTerm;
 import javax.mail.search.ReceivedDateTerm;
 import javax.mail.search.SearchTerm;
 
@@ -37,11 +39,12 @@ import javax.mail.search.SearchTerm;
  */
 public class EnviarCorreo {
     
-    private String emailFrom = "aapecargame@gmail.com";
-    private String passwordFrom = "foxijoltgjipzttn";
+    private String emailFrom;
+    private String passwordFrom;
     private String emailTo;
     private String subject;
     private String content;
+    private Message[] mensajes;
     
     private Properties properties;
     private Session mSession;
@@ -164,6 +167,81 @@ public class EnviarCorreo {
         
         SearchTerm searchTerm = new ReceivedDateTerm(ComparisonTerm.GE, fechaHaceUnaSemana);
         Message[] mensajes = inbox.search(searchTerm);
+        this.mensajes = mensajes;
+        
+        for(int i = mensajes.length-1; i >= 0; i--){
+            Object messageContent = mensajes[i].getContent();
+            Email mail = new Email();
+            mail.setRemitentePrincipal(mensajes[i].getFrom()[0].toString());
+            mail.setRemitentes(mensajes[i].getFrom());
+            mail.setFechaRecibido(mensajes[i].getReceivedDate().toString());
+            mail.setAsunto(mensajes[i].getSubject());
+            
+            if (mensajes[i].isMimeType("multipart/*")) {
+                MimeMultipart multipart = (MimeMultipart) mensajes[i].getContent();
+                for (int e = 0; e < multipart.getCount(); e++) {
+                    BodyPart bodyPart = multipart.getBodyPart(e);
+                    if (bodyPart.isMimeType("text/html")) {
+                        mail.setCuerpo(bodyPart.getContent().toString());
+                    }
+                }
+            }else{
+                mail.setCuerpo(mensajes[i].getContent().toString());
+            }
+            emails.add(mail);
+        }
+        
+        inbox.close();
+        store.close();
+        return emails;
+    }
+
+    public Message[] getMensajes() {
+        return mensajes;
+    }
+    
+    public void eliminarCorreo(int correo){
+        try {
+            Properties prop = new Properties();
+            prop.put("mail.store.protocol", "imaps");
+            
+            Store store = Session.getInstance(prop).getStore();
+            store.connect("imap.gmail.com", emailFrom, passwordFrom);
+            
+            Folder inbox = store.getFolder("INBOX");
+            inbox.open(Folder.READ_WRITE);
+            
+            int totalMessages = inbox.getMessageCount();
+            Message[] messages = inbox.search(new MessageNumberTerm(totalMessages-correo));
+
+            messages[0].setFlag(Flags.Flag.DELETED, true);
+            
+            inbox.close();
+            store.close();
+        } catch (MessagingException ex) {
+            Logger.getLogger(EnviarCorreo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public ArrayList<Email> correosUltimaHora(ArrayList<Email> emailsEntrantes) throws MessagingException, IOException{
+        ArrayList<Email> emails = new ArrayList();
+        Properties prop = new Properties();
+        prop.put("mail.store.protocol", "imaps");
+        
+        Store store = Session.getInstance(prop).getStore();
+        store.connect("imap.gmail.com", emailFrom, passwordFrom);
+        
+        Folder inbox = store.getFolder("INBOX");
+        inbox.open(Folder.READ_WRITE);
+        
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.HOUR_OF_DAY, -1);
+        Date fechaHaceUnaHora = calendar.getTime();
+        
+        SearchTerm searchTerm = new ReceivedDateTerm(ComparisonTerm.GE, fechaHaceUnaHora);
+        Message[] mensajes = inbox.search(searchTerm);
+        this.mensajes = mensajes;
         
         for(int i = mensajes.length-1; i >= 0; i--){
             Object messageContent = mensajes[i].getContent();
@@ -174,6 +252,15 @@ public class EnviarCorreo {
             mail.setAsunto(mensajes[i].getSubject());
             mail.setCuerpo(mensajes[i].getContent().toString());
             emails.add(mail);
+        }
+        
+        for(int e = 0; e < emailsEntrantes.size(); e++){
+            for(int i = emails.size()-1; i >= 0; i--){
+                if(emailsEntrantes.get(e).getAsunto().equals(emails.get(i).getAsunto())){
+                    emails.remove(i);
+                    break;
+                }
+            }
         }
         
         inbox.close();
