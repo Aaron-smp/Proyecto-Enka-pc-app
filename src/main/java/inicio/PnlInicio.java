@@ -4,7 +4,9 @@
  */
 package inicio;
 
+import com.google.cloud.firestore.Firestore;
 import javax.swing.ImageIcon;
+import utils.UtilsInicio;
 
 /**
  *
@@ -15,10 +17,23 @@ public class PnlInicio extends javax.swing.JPanel {
     /**
      * Creates new form Inicio
      */
-    public PnlInicio(String[] nombres) {
+    private Firestore firestore;
+    
+    public PnlInicio(String[] nombres, Firestore firestore) {
         initComponents();
+        this.firestore = firestore;
         ganaderia.setText("Ganaderia: " + nombres[0]);
         ganadero.setText("Bienvenido " + nombres[1] + "!");
+        UtilsInicio util = new UtilsInicio(this.firestore);
+        int numBovino = util.getNumberBovinos();
+        int numPorcino = util.getNumberPorcinos();
+        int numAves = util.getNumberAves();
+        nBovinos.setText("Nº de bovinos: " + numBovino);
+        nPorcino.setText("Nº de porcinos: " + numPorcino);
+        nAves.setText("Nº de aves: " + numAves);
+        bovin.setToolTipText("Nº de bovinos: " + numBovino);
+        porcin.setToolTipText("Nº de porcinos: " + numPorcino);
+        aves.setToolTipText("Nº de aves: " + numAves);
     }
 
     /**
@@ -35,21 +50,21 @@ public class PnlInicio extends javax.swing.JPanel {
         jPanel2 = new javax.swing.JPanel();
         ganadero = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        nBovinos = new javax.swing.JLabel();
+        beneficios = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        nPorcino = new javax.swing.JLabel();
+        gastos = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        nAves = new javax.swing.JLabel();
+        ingresos = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
+        piensoKg = new javax.swing.JLabel();
+        empleados = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
-        jLabel11 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
+        bovin = new javax.swing.JLabel();
+        porcin = new javax.swing.JLabel();
+        aves = new javax.swing.JLabel();
 
         jLabel3.setText("jLabel3");
 
@@ -70,82 +85,85 @@ public class PnlInicio extends javax.swing.JPanel {
 
         jPanel1.setLayout(new java.awt.GridLayout(1, 2));
 
-        jLabel1.setFont(new java.awt.Font("Poppins", 0, 36)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Nº de bovinos: 0");
-        jLabel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel1.add(jLabel1);
+        nBovinos.setFont(new java.awt.Font("Poppins", 0, 36)); // NOI18N
+        nBovinos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        nBovinos.setText("Nº de bovinos: 0");
+        nBovinos.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel1.add(nBovinos);
 
-        jLabel5.setFont(new java.awt.Font("Poppins", 0, 36)); // NOI18N
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("Beneficios: 0");
-        jLabel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel1.add(jLabel5);
+        beneficios.setFont(new java.awt.Font("Poppins", 0, 36)); // NOI18N
+        beneficios.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        beneficios.setText("Beneficios: 0");
+        beneficios.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel1.add(beneficios);
 
         jPanel2.add(jPanel1);
 
         jPanel3.setLayout(new java.awt.GridLayout(1, 2));
 
-        jLabel6.setFont(new java.awt.Font("Poppins", 0, 36)); // NOI18N
-        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel6.setText("Nº de porcinos: 0");
-        jLabel6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel3.add(jLabel6);
+        nPorcino.setFont(new java.awt.Font("Poppins", 0, 36)); // NOI18N
+        nPorcino.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        nPorcino.setText("Nº de porcinos: 0");
+        nPorcino.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel3.add(nPorcino);
 
-        jLabel7.setFont(new java.awt.Font("Poppins", 0, 36)); // NOI18N
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel7.setText("Gastos: 0");
-        jLabel7.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel3.add(jLabel7);
+        gastos.setFont(new java.awt.Font("Poppins", 0, 36)); // NOI18N
+        gastos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        gastos.setText("Gastos: 0");
+        gastos.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel3.add(gastos);
 
         jPanel2.add(jPanel3);
 
         jPanel4.setLayout(new java.awt.GridLayout(1, 2));
 
-        jLabel8.setFont(new java.awt.Font("Poppins", 0, 36)); // NOI18N
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel8.setText("Nº de aves: 0");
-        jLabel8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel4.add(jLabel8);
+        nAves.setFont(new java.awt.Font("Poppins", 0, 36)); // NOI18N
+        nAves.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        nAves.setText("Nº de aves: 0");
+        nAves.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel4.add(nAves);
 
-        jLabel4.setFont(new java.awt.Font("Poppins", 0, 36)); // NOI18N
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("Ingresos: 0");
-        jLabel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel4.add(jLabel4);
+        ingresos.setFont(new java.awt.Font("Poppins", 0, 36)); // NOI18N
+        ingresos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ingresos.setText("Ingresos: 0");
+        ingresos.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel4.add(ingresos);
 
         jPanel2.add(jPanel4);
 
         jPanel5.setLayout(new java.awt.GridLayout(1, 2));
 
-        jLabel2.setFont(new java.awt.Font("Poppins", 0, 36)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Consumo de pienso: 0kg");
-        jLabel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel5.add(jLabel2);
+        piensoKg.setFont(new java.awt.Font("Poppins", 0, 36)); // NOI18N
+        piensoKg.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        piensoKg.setText("Consumo de pienso: 0kg");
+        piensoKg.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel5.add(piensoKg);
 
-        jLabel9.setFont(new java.awt.Font("Poppins", 0, 36)); // NOI18N
-        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel9.setText("Empleados: 0");
-        jLabel9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel5.add(jLabel9);
+        empleados.setFont(new java.awt.Font("Poppins", 0, 36)); // NOI18N
+        empleados.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        empleados.setText("Empleados: 0");
+        empleados.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel5.add(empleados);
 
         jPanel2.add(jPanel5);
 
         jPanel6.setLayout(new java.awt.GridLayout(1, 3));
 
-        jLabel11.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
-        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel11.setIcon(new ImageIcon(getClass().getResource("/iconos/vacaXL.png")));
-        jPanel6.add(jLabel11);
+        bovin.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        bovin.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        bovin.setIcon(new ImageIcon(getClass().getResource("/iconos/vacaXL.png")));
+        bovin.setToolTipText("Nº bovinos:");
+        jPanel6.add(bovin);
 
-        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel10.setIcon(new ImageIcon(getClass().getResource("/iconos/cerdo.png")));
-        jPanel6.add(jLabel10);
+        porcin.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        porcin.setIcon(new ImageIcon(getClass().getResource("/iconos/cerdo.png")));
+        porcin.setToolTipText("Nº de cerdos:");
+        jPanel6.add(porcin);
 
-        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel12.setIcon(new ImageIcon(getClass().getResource("/iconos/gallina.png")));
-        jPanel6.add(jLabel12);
+        aves.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        aves.setIcon(new ImageIcon(getClass().getResource("/iconos/gallina.png")));
+        aves.setToolTipText("Nº de aves:");
+        jPanel6.add(aves);
 
         jPanel2.add(jPanel6);
 
@@ -154,25 +172,25 @@ public class PnlInicio extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel aves;
+    private javax.swing.JLabel beneficios;
+    private javax.swing.JLabel bovin;
+    private javax.swing.JLabel empleados;
     private javax.swing.JLabel ganaderia;
     private javax.swing.JLabel ganadero;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel gastos;
+    private javax.swing.JLabel ingresos;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JLabel nAves;
+    private javax.swing.JLabel nBovinos;
+    private javax.swing.JLabel nPorcino;
+    private javax.swing.JLabel piensoKg;
+    private javax.swing.JLabel porcin;
     // End of variables declaration//GEN-END:variables
 }

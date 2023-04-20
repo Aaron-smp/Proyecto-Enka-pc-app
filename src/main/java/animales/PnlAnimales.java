@@ -4,10 +4,8 @@
  */
 package animales;
 
-import com.google.cloud.firestore.CollectionReference;
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.Query;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.firebase.cloud.FirestoreClient;
@@ -717,9 +715,9 @@ public class PnlAnimales extends javax.swing.JPanel {
                 if(edit.isContinuar()){
                     String idDocu = "";
                     UtilsAnimales util = new UtilsAnimales(firestore);
-                    List<QueryDocumentSnapshot> listaPorcinos = util.getPorcinos();
-                    for (QueryDocumentSnapshot documento : listaPorcinos) {
-                        if(documento.getString("nLote").equals(lote)){
+                    List<QueryDocumentSnapshot> listaAves = util.getAves();
+                    for (QueryDocumentSnapshot documento : listaAves) {
+                        if(documento.getLong("nLote").equals(lote)){
                             idDocu = documento.getId();
                         }
                     }
@@ -728,12 +726,11 @@ public class PnlAnimales extends javax.swing.JPanel {
                     map.put("nLote", lote);
                     map.put("cantidad", edit.getnCant());
                     map.put("fecha", edit.getFechaCompra());
-                    map.put("Vendido", edit.isVendido());
+                    map.put("vendido", edit.isVendido());
                     docRef.update(map);
-                    refrescarBovino();
                     edit.dispose();
                 }
-            refrescarAves();
+             refrescarAves();
         }
     }//GEN-LAST:event_editarRowActionPerformed
 

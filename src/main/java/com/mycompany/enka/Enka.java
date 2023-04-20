@@ -29,6 +29,7 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,7 +37,7 @@ import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import perfil.PnlPerfil;
-import ventas.PnlVentas;
+import ventas.PnlBase;
 
 /**
  *
@@ -83,8 +84,8 @@ public class Enka extends javax.swing.JFrame {
         pnlAni.refrescarPorcino();
         pnlAni.refrescarAves();
         String[] nombres = datosPerf();
-        PnlInicio pnlIni = new PnlInicio(nombres);
-        PnlVentas pnlVent = new PnlVentas();
+        PnlInicio pnlIni = new PnlInicio(nombres, firestore);
+        PnlBase pnlVent = new PnlBase(this.firestore);
         PnlCorreo pnlCorre = new PnlCorreo(this.firestore);
         PnlPerfil pnlPerf = new PnlPerfil(this.firestore, this);
         pnlPerf.iniciarDatos();
@@ -138,7 +139,11 @@ public class Enka extends javax.swing.JFrame {
         pntCom = new javax.swing.JMenu();
         jMenuItem9 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
-        jMenuItem8 = new javax.swing.JMenuItem();
+        informacion = new javax.swing.JMenu();
+        paginaMinisterio = new javax.swing.JMenuItem();
+        trazabilidadBovino = new javax.swing.JMenuItem();
+        trazabilidadPorcino = new javax.swing.JMenuItem();
+        trazabilidadAves = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
 
         jMenuItem6.setText("jMenuItem6");
@@ -356,8 +361,41 @@ public class Enka extends javax.swing.JFrame {
 
         jMenu2.setText("Ayuda");
 
-        jMenuItem8.setText("Informacion legal");
-        jMenu2.add(jMenuItem8);
+        informacion.setText("Informacion legal");
+
+        paginaMinisterio.setText("Pagina oficial ministerio de agricultura, pesca y alimentacion");
+        paginaMinisterio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                paginaMinisterioActionPerformed(evt);
+            }
+        });
+        informacion.add(paginaMinisterio);
+
+        trazabilidadBovino.setText("Trazabilidad ganado bovino");
+        trazabilidadBovino.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                trazabilidadBovinoActionPerformed(evt);
+            }
+        });
+        informacion.add(trazabilidadBovino);
+
+        trazabilidadPorcino.setText("Trazabilidad ganado porcino");
+        trazabilidadPorcino.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                trazabilidadPorcinoActionPerformed(evt);
+            }
+        });
+        informacion.add(trazabilidadPorcino);
+
+        trazabilidadAves.setText("Trazabilidad de aves");
+        trazabilidadAves.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                trazabilidadAvesActionPerformed(evt);
+            }
+        });
+        informacion.add(trazabilidadAves);
+
+        jMenu2.add(informacion);
 
         jMenuItem7.setText("Acerca de Enka");
         jMenu2.add(jMenuItem7);
@@ -572,6 +610,66 @@ public class Enka extends javax.swing.JFrame {
         card.show(pantallaPrincipal, "ventas");
         this.setTitle("ENKA | Ventas");
     }//GEN-LAST:event_pnlVentasMouseClicked
+
+    private void paginaMinisterioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paginaMinisterioActionPerformed
+        if (java.awt.Desktop.isDesktopSupported()) {
+            java.awt.Desktop desktop = java.awt.Desktop.getDesktop();
+ 
+            if (desktop.isSupported(java.awt.Desktop.Action.BROWSE)) {
+                try {
+                    java.net.URI uri = new java.net.URI("https://www.mapa.gob.es/es/ganaderia/temas/default.aspx");
+                    desktop.browse(uri);
+                } catch (URISyntaxException | IOException ex) {
+                    Logger.getLogger(Enka.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }//GEN-LAST:event_paginaMinisterioActionPerformed
+
+    private void trazabilidadBovinoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trazabilidadBovinoActionPerformed
+        if (java.awt.Desktop.isDesktopSupported()) {
+            java.awt.Desktop desktop = java.awt.Desktop.getDesktop();
+ 
+            if (desktop.isSupported(java.awt.Desktop.Action.BROWSE)) {
+                try {
+                    java.net.URI uri = new java.net.URI("https://www.mapa.gob.es/es/ganaderia/temas/trazabilidad-animal/identificacion-animal/bovino/");
+                    desktop.browse(uri);
+                } catch (URISyntaxException | IOException ex) {
+                    Logger.getLogger(Enka.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }//GEN-LAST:event_trazabilidadBovinoActionPerformed
+
+    private void trazabilidadPorcinoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trazabilidadPorcinoActionPerformed
+        if (java.awt.Desktop.isDesktopSupported()) {
+            java.awt.Desktop desktop = java.awt.Desktop.getDesktop();
+ 
+            if (desktop.isSupported(java.awt.Desktop.Action.BROWSE)) {
+                try {
+                    java.net.URI uri = new java.net.URI("https://www.mapa.gob.es/es/ganaderia/temas/trazabilidad-animal/identificacion-animal/otras-especies/#ancla0");
+                    desktop.browse(uri);
+                } catch (URISyntaxException | IOException ex) {
+                    Logger.getLogger(Enka.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }//GEN-LAST:event_trazabilidadPorcinoActionPerformed
+
+    private void trazabilidadAvesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trazabilidadAvesActionPerformed
+        if (java.awt.Desktop.isDesktopSupported()) {
+            java.awt.Desktop desktop = java.awt.Desktop.getDesktop();
+ 
+            if (desktop.isSupported(java.awt.Desktop.Action.BROWSE)) {
+                try {
+                    java.net.URI uri = new java.net.URI("https://www.mapa.gob.es/es/ganaderia/temas/trazabilidad-animal/identificacion-animal/otras-especies/#ancla1");
+                    desktop.browse(uri);
+                } catch (URISyntaxException | IOException ex) {
+                    Logger.getLogger(Enka.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }//GEN-LAST:event_trazabilidadAvesActionPerformed
     
     public void crearConexion(){
         try {
@@ -666,6 +764,7 @@ public class Enka extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel contenedor;
+    private javax.swing.JMenu informacion;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -683,7 +782,6 @@ public class Enka extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
-    private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JLabel labelAni;
     private javax.swing.JLabel labelCorr;
@@ -691,6 +789,7 @@ public class Enka extends javax.swing.JFrame {
     private javax.swing.JLabel labelPerf;
     private javax.swing.JLabel labelVent;
     private javax.swing.JPanel menuLateral;
+    private javax.swing.JMenuItem paginaMinisterio;
     private javax.swing.JPanel pantallaPrincipal;
     private javax.swing.JPanel pnlAnimales;
     private javax.swing.JPanel pnlCorreo;
@@ -698,5 +797,8 @@ public class Enka extends javax.swing.JFrame {
     private javax.swing.JPanel pnlPerfil;
     private javax.swing.JPanel pnlVentas;
     private javax.swing.JMenu pntCom;
+    private javax.swing.JMenuItem trazabilidadAves;
+    private javax.swing.JMenuItem trazabilidadBovino;
+    private javax.swing.JMenuItem trazabilidadPorcino;
     // End of variables declaration//GEN-END:variables
 }

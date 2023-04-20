@@ -76,11 +76,45 @@
             <Property name="text" type="java.lang.String" value="Ayuda"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem8">
+            <Menu class="javax.swing.JMenu" name="informacion">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Informacion legal"/>
               </Properties>
-            </MenuItem>
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="paginaMinisterio">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Pagina oficial ministerio de agricultura, pesca y alimentacion"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="paginaMinisterioActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="trazabilidadBovino">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Trazabilidad ganado bovino"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="trazabilidadBovinoActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="trazabilidadPorcino">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Trazabilidad ganado porcino"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="trazabilidadPorcinoActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="trazabilidadAves">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Trazabilidad de aves"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="trazabilidadAvesActionPerformed"/>
+                  </Events>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem7">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Acerca de Enka"/>
