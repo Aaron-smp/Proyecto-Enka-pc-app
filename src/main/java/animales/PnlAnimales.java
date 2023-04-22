@@ -348,7 +348,7 @@ public class PnlAnimales extends javax.swing.JPanel {
         tablasPane.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         tablasPane.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
 
-        tablaBovino.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        tablaBovino.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
         tablaBovino.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -370,7 +370,7 @@ public class PnlAnimales extends javax.swing.JPanel {
 
         tablasPane.addTab("Bovino", jScrollPane2);
 
-        tablaPorcino.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        tablaPorcino.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
         tablaPorcino.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -401,7 +401,7 @@ public class PnlAnimales extends javax.swing.JPanel {
 
         tablasPane.addTab("Porcino", jScrollPane3);
 
-        tablaAves.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        tablaAves.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
         tablaAves.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -646,9 +646,14 @@ public class PnlAnimales extends javax.swing.JPanel {
                     map.put("Fecha nacimiento", edit.getFechaNacS());
                     map.put("Vendido", edit.isVendi());
                     docRef.update(map);
-                    refrescarBovino();
                     edit.dispose();
                 }
+                try {
+                    Thread.sleep(300);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(PnlAnimales.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                refrescarBovino();
             }
         }else if(tablasPane.getSelectedIndex() == 1){
             if(tablaPorcino.getSelectedRow()>= 0){

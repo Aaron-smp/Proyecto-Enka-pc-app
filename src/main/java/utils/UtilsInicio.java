@@ -96,7 +96,13 @@ public class UtilsInicio {
     }
     
     public int getIngresos(){
-        return 0;
+        UtilsVentas util = new UtilsVentas(firestore);
+        List<QueryDocumentSnapshot> ventas = util.getVentas();
+        int totalIngresos = 0;
+        for(QueryDocumentSnapshot document : ventas){
+            totalIngresos += document.getLong("total");
+        }
+        return totalIngresos;
     }
     
     public int getEmpleados(){

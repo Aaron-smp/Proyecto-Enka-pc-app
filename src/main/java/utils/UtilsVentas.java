@@ -6,10 +6,12 @@ package utils;
 
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.CollectionReference;
+import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.Query;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
+import com.google.cloud.firestore.WriteResult;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -126,12 +128,25 @@ public class UtilsVentas {
     
     public List<QueryDocumentSnapshot> getVentas(){
         List<QueryDocumentSnapshot> documentosVentas = null;
+        ArrayList<QueryDocumentSnapshot> documentos = new ArrayList<QueryDocumentSnapshot>();
         try {
             CollectionReference animalesRef = firestore.collection("ventas");
-            Query ventasQuery = animalesRef;
+            Query ventasQuery = animalesRef.whereEqualTo("animal", "Bovino");
             ApiFuture<QuerySnapshot> querySnapshot = ventasQuery.get();
             QuerySnapshot queryResult = querySnapshot.get();
-            documentosVentas = queryResult.getDocuments();
+            documentos.addAll(queryResult.getDocuments());
+            
+            ventasQuery = animalesRef.whereEqualTo("animal", "Porcino");
+            querySnapshot = ventasQuery.get();
+            queryResult = querySnapshot.get();
+            documentos.addAll(queryResult.getDocuments());
+            
+            ventasQuery = animalesRef.whereEqualTo("animal", "Aves");
+            querySnapshot = ventasQuery.get();
+            queryResult = querySnapshot.get();
+            documentos.addAll(queryResult.getDocuments());
+            
+            documentosVentas = documentos;
         } catch (InterruptedException ex) {
             Logger.getLogger(UtilsAnimales.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ExecutionException ex) {
@@ -141,12 +156,76 @@ public class UtilsVentas {
     }
     
     public void venderAnimal(String animal, String codigo){
+        UtilsAnimales util = new UtilsAnimales(firestore);
         if(animal.equals("Bovino")){
-            
+            List<QueryDocumentSnapshot> documentosBovino = util.getBovinos();
+            for (QueryDocumentSnapshot documento : documentosBovino) {
+                String numIde = documento.getString("Numero identificacion");
+                String idDocu = documento.getId();
+                if(numIde.equals(codigo)){
+                    DocumentReference docRef = this.firestore.collection("animales").document("bovino").collection("bovinos").document(idDocu);
+                    ApiFuture<WriteResult> future = docRef.update("Vendido", true);
+                    try {
+                        future.get();
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(UtilsVentas.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ExecutionException ex) {
+                        Logger.getLogger(UtilsVentas.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
         }else if(animal.equals("Porcino")){
-            
+            List<QueryDocumentSnapshot> documentosPorcino = util.getPorcinos();
+            for (QueryDocumentSnapshot documento : documentosPorcino) {
+                String numIde = documento.getString("Numero identificacion");
+                String idDocu = documento.getId();
+                System.out.println(idDocu);
+                if(numIde.equals(codigo)){
+                    DocumentReference docRef = this.firestore.collection("animales").document("porcino").collection("porcinos").document(idDocu);
+                    ApiFuture<WriteResult> future = docRef.update("Vendido", true);
+                    try {
+                        future.get();
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(UtilsVentas.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ExecutionException ex) {
+                        Logger.getLogger(UtilsVentas.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
         }else{
+            List<QueryDocumentSnapshot> documentosAves = util.getAves();
+            for (QueryDocumentSnapshot documento : documentosAves) {
+                String numIde = Long.toString(documento.getLong("nLote"));
+                String idDocu = documento.getId();
+                System.out.println("Num ide: " + numIde);
+                if(numIde.equals(codigo)){
+                    DocumentReference docRef = this.firestore.collection("animales").document("ave").collection("aves").document(idDocu);
+                    ApiFuture<WriteResult> future = docRef.update("vendido", true);
+                    try {
+                        future.get();
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(UtilsVentas.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ExecutionException ex) {
+                        Logger.getLogger(UtilsVentas.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        }
+    }
+    
+    public void borrarVenta(String codigo){
+        try {
+            CollectionReference coleccion = firestore.collection("ventas");
+            Query query = coleccion.whereEqualTo("codigo", codigo);
             
+            ApiFuture<QuerySnapshot> querySnapshot = query.get();
+            for (QueryDocumentSnapshot document : querySnapshot.get().getDocuments()) {
+                document.getReference().delete();
+            }
+        } catch (InterruptedException ex) {
+            Logger.getLogger(UtilsVentas.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ExecutionException ex) {
+            Logger.getLogger(UtilsVentas.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

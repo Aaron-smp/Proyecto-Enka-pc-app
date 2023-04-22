@@ -24,16 +24,7 @@ public class PnlInicio extends javax.swing.JPanel {
         this.firestore = firestore;
         ganaderia.setText("Ganaderia: " + nombres[0]);
         ganadero.setText("Bienvenido " + nombres[1] + "!");
-        UtilsInicio util = new UtilsInicio(this.firestore);
-        int numBovino = util.getNumberBovinos();
-        int numPorcino = util.getNumberPorcinos();
-        int numAves = util.getNumberAves();
-        nBovinos.setText("Nº de bovinos: " + numBovino);
-        nPorcino.setText("Nº de porcinos: " + numPorcino);
-        nAves.setText("Nº de aves: " + numAves);
-        bovin.setToolTipText("Nº de bovinos: " + numBovino);
-        porcin.setToolTipText("Nº de porcinos: " + numPorcino);
-        aves.setToolTipText("Nº de aves: " + numAves);
+        updateStats();
     }
 
     /**
@@ -169,7 +160,21 @@ public class PnlInicio extends javax.swing.JPanel {
 
         add(jPanel2, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    public void updateStats(){
+        UtilsInicio util = new UtilsInicio(this.firestore);
+                
+        int numBovino = util.getNumberBovinos();
+        int numPorcino = util.getNumberPorcinos();
+        int numAves = util.getNumberAves();
+        nBovinos.setText("Nº de bovinos: " + numBovino);
+        nPorcino.setText("Nº de porcinos: " + numPorcino);
+        nAves.setText("Nº de aves: " + numAves);
+        bovin.setToolTipText("Nº de bovinos: " + numBovino);
+        porcin.setToolTipText("Nº de porcinos: " + numPorcino);
+        aves.setToolTipText("Nº de aves: " + numAves);
+        ingresos.setText("Ingresos: " + util.getIngresos() + "€");
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel aves;

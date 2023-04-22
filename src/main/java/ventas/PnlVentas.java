@@ -12,7 +12,6 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import utils.UtilsAnimales;
 import utils.UtilsVentas;
 
 /**
@@ -62,6 +61,7 @@ public class PnlVentas extends javax.swing.JPanel {
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaVentas = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -166,6 +166,15 @@ public class PnlVentas extends javax.swing.JPanel {
         jScrollPane1.setViewportView(tablaVentas);
 
         add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        jButton1.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        jButton1.setText("Borrar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        add(jButton1, java.awt.BorderLayout.PAGE_END);
     }// </editor-fold>//GEN-END:initComponents
 
     private void animalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_animalActionPerformed
@@ -184,15 +193,48 @@ public class PnlVentas extends javax.swing.JPanel {
 
     private void venderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_venderActionPerformed
         int opcion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de que deseas continuar?", "Confirmación", JOptionPane.YES_NO_OPTION);
+        UtilsVentas util = new UtilsVentas(firestore);
         if (opcion == JOptionPane.YES_OPTION) {
             if((float)precio.getValue() > 0){
-                UtilsVentas util = new UtilsVentas(firestore);
-                util.introducirVenta((String) animal.getSelectedItem(), (String) codigos.getSelectedItem(), util.obtenerFechaHoraActual(),
-                        IVA, (float) precio.getValue(), util.getPrecioConIVA((float) precio.getValue(), IVA));
-                actualizarVentas();
+                System.out.println(codigos.getSelectedItem());
+                if(animal.getSelectedItem().equals("Bovino")){
+                    util.introducirVenta((String) animal.getSelectedItem(), (String) codigos.getSelectedItem(), util.obtenerFechaHoraActual(),
+                            IVA, (float) precio.getValue(), util.getPrecioConIVA((float) precio.getValue(), IVA));
+                    util.venderAnimal("Bovino", (String)codigos.getSelectedItem());
+                    actualizarVentas();
+                    DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>(util.getCodigos("Bovino").toArray(new String[0]));
+                    codigos.setModel(modelo);
+                }else if(animal.getSelectedItem().equals("Porcino")){
+                    util.introducirVenta((String) animal.getSelectedItem(), (String) codigos.getSelectedItem(), util.obtenerFechaHoraActual(),
+                            IVA, (float) precio.getValue(), util.getPrecioConIVA((float) precio.getValue(), IVA));
+                    util.venderAnimal("Porcino", (String)codigos.getSelectedItem());
+                    System.out.println("LLega");
+                    actualizarVentas();
+                    DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>(util.getCodigos("Porcino").toArray(new String[0]));
+                    codigos.setModel(modelo);
+                }else{
+                    util.introducirVenta((String) animal.getSelectedItem(), (String) codigos.getSelectedItem(), util.obtenerFechaHoraActual(),
+                            IVA, (float) precio.getValue(), util.getPrecioConIVA((float) precio.getValue(), IVA));
+                    util.venderAnimal("Aves", (String)codigos.getSelectedItem());
+                    System.out.println("Codigo UI: " + codigos.getSelectedItem());
+                    actualizarVentas();
+                    DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>(util.getCodigos("Aves").toArray(new String[0]));
+                    codigos.setModel(modelo);
+                }
+            }else{
+                JOptionPane.showMessageDialog(null, "No se puede vender a 0€", "Informacion", 1);
             }
+            
         }
     }//GEN-LAST:event_venderActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        UtilsVentas util = new UtilsVentas(firestore);
+        if(tablaVentas.getSelectedRowCount() > 0 && tablaVentas.getSelectedRowCount() == 1){
+            util.borrarVenta((String) tablaVentas.getValueAt(tablaVentas.getSelectedRow(), 0));
+        }
+        actualizarVentas();
+    }//GEN-LAST:event_jButton1ActionPerformed
     
     public void actualizarVentas(){
         UtilsVentas util = new UtilsVentas(firestore);
@@ -214,6 +256,7 @@ public class PnlVentas extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> animal;
     private javax.swing.JComboBox<String> codigos;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
