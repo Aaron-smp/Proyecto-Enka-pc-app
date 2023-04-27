@@ -4,6 +4,25 @@
  */
 package ventas;
 
+import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.QueryDocumentSnapshot;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+import utils.UtilsVentas;
+
 /**
  *
  * @author Aaron
@@ -13,8 +32,44 @@ public class PnlGastos extends javax.swing.JPanel {
     /**
      * Creates new form PnlGastos
      */
-    public PnlGastos() {
+    
+    private Firestore firestore;
+    
+    public PnlGastos(Firestore firestore) {
         initComponents();
+        this.firestore = firestore;
+        Font headerFont = new Font("Segoe UI", Font.PLAIN, 18);
+        JTableHeader header = tablaGastos.getTableHeader();
+        header.setFont(headerFont);
+        
+        TableColumn column = tablaGastos.getColumnModel().getColumn(3);
+        column.setPreferredWidth(150);
+        
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        for (int i = 0; i < tablaGastos.getColumnCount(); i++) {
+            tablaGastos.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+        
+        TableCellRenderer multiLineRenderer = new TableCellRenderer() {
+            JTextArea textArea = new JTextArea();
+
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                textArea.setText(value.toString());
+                textArea.setLineWrap(true);
+                textArea.setWrapStyleWord(true);
+                textArea.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+                
+                JScrollPane scrollPane = new JScrollPane(textArea);
+                scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+                scrollPane.setPreferredSize(new Dimension(200, 100));
+                return scrollPane;
+        }
+        
+        };
+        tablaGastos.getColumnModel().getColumn(3).setCellRenderer(multiLineRenderer);
+        tablaGastos.setRowHeight(80);
     }
 
     /**
@@ -26,19 +81,229 @@ public class PnlGastos extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 736, Short.MAX_VALUE)
+        jPanel2 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        gasto = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        categoria = new javax.swing.JComboBox<>();
+        jLabel5 = new javax.swing.JLabel();
+        importe = new javax.swing.JSpinner();
+        jLabel2 = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        descripcion = new javax.swing.JTextArea();
+        jPanel7 = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tablaGastos = new javax.swing.JTable();
+        borrar = new javax.swing.JButton();
+
+        setLayout(new java.awt.BorderLayout());
+
+        jPanel2.setMinimumSize(new java.awt.Dimension(400, 189));
+        jPanel2.setPreferredSize(new java.awt.Dimension(400, 250));
+        jPanel2.setLayout(new java.awt.BorderLayout());
+
+        jPanel4.setPreferredSize(new java.awt.Dimension(929, 50));
+
+        gasto.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        gasto.setText("Añadir gasto");
+        gasto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gastoActionPerformed(evt);
+            }
+        });
+        jPanel4.add(gasto);
+
+        jPanel2.add(jPanel4, java.awt.BorderLayout.PAGE_END);
+
+        jPanel1.setPreferredSize(new java.awt.Dimension(0, 300));
+        jPanel1.setLayout(new java.awt.BorderLayout());
+
+        jPanel6.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jLabel1.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel1.setText("Categoria:");
+        jLabel1.setMaximumSize(new java.awt.Dimension(400, 300));
+        jLabel1.setMinimumSize(new java.awt.Dimension(110, 28));
+        jLabel1.setPreferredSize(new java.awt.Dimension(140, 60));
+        jPanel6.add(jLabel1);
+
+        categoria.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        categoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pienso", "Nomina", "Veterinario", "Transporte", "Otro" }));
+        jPanel6.add(categoria);
+
+        jLabel5.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel5.setText("Importe");
+        jLabel5.setPreferredSize(new java.awt.Dimension(120, 28));
+        jPanel6.add(jLabel5);
+
+        importe.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        importe.setModel(new javax.swing.SpinnerNumberModel(1.0f, 1.0f, null, 1.0f));
+        importe.setPreferredSize(new java.awt.Dimension(90, 34));
+        jPanel6.add(importe);
+
+        jLabel2.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        jLabel2.setText("€");
+        jPanel6.add(jLabel2);
+
+        jPanel1.add(jPanel6, java.awt.BorderLayout.NORTH);
+
+        jPanel5.setLayout(new java.awt.BorderLayout());
+
+        jLabel3.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("Observaciones:");
+        jLabel3.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jLabel3.setPreferredSize(new java.awt.Dimension(150, 60));
+        jPanel5.add(jLabel3, java.awt.BorderLayout.LINE_START);
+
+        descripcion.setColumns(20);
+        descripcion.setFont(new java.awt.Font("Poppins", 0, 17)); // NOI18N
+        descripcion.setRows(5);
+        jScrollPane2.setViewportView(descripcion);
+
+        jPanel5.add(jScrollPane2, java.awt.BorderLayout.CENTER);
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 498, Short.MAX_VALUE)
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 110, Short.MAX_VALUE)
         );
+
+        jPanel5.add(jPanel7, java.awt.BorderLayout.LINE_END);
+
+        jPanel1.add(jPanel5, java.awt.BorderLayout.CENTER);
+
+        jPanel2.add(jPanel1, java.awt.BorderLayout.CENTER);
+
+        jPanel3.setPreferredSize(new java.awt.Dimension(929, 20));
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 882, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 20, Short.MAX_VALUE)
+        );
+
+        jPanel2.add(jPanel3, java.awt.BorderLayout.PAGE_START);
+
+        add(jPanel2, java.awt.BorderLayout.NORTH);
+
+        tablaGastos.setFont(new java.awt.Font("Poppins", 0, 17)); // NOI18N
+        tablaGastos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Fecha", "Categoria", "Importe", "Observaciones"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.Float.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tablaGastos);
+
+        add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        borrar.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        borrar.setText("Borrar");
+        borrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                borrarActionPerformed(evt);
+            }
+        });
+        add(borrar, java.awt.BorderLayout.PAGE_END);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void gastoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gastoActionPerformed
+        UtilsVentas util = new UtilsVentas(this.firestore);
+        util.introducirGasto((String)categoria.getSelectedItem(), (float) importe.getValue(), descripcion.getText());
+        try {
+            Thread.sleep(150);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(PnlGastos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        actualizarGastos();
+    }//GEN-LAST:event_gastoActionPerformed
+
+    private void borrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrarActionPerformed
+        UtilsVentas util = new UtilsVentas(firestore);
+        if(tablaGastos.getSelectedRowCount() > 0 && tablaGastos.getSelectedRowCount() == 1){
+            util.borrarGasto((String) tablaGastos.getValueAt(tablaGastos.getSelectedRow(), 0));
+        }
+        try {
+            Thread.sleep(150);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(PnlVentas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        actualizarGastos();
+    }//GEN-LAST:event_borrarActionPerformed
+    
+    public void actualizarGastos(){
+        UtilsVentas util = new UtilsVentas(firestore);
+        List<QueryDocumentSnapshot> listaGastos = util.getGastos();
+        DefaultTableModel modeloTabla = (DefaultTableModel) tablaGastos.getModel();
+        modeloTabla.setRowCount(0);
+        for (QueryDocumentSnapshot documento : listaGastos) {
+            String categoria = documento.getString("categoria");
+            String fecha = documento.getString("fecha");
+            Long importe = documento.getLong("importe");
+            String observaciones = documento.getString("observaciones");
+            
+            modeloTabla.addRow(new Object[] {fecha, categoria, importe, observaciones});
+        }
+        tablaGastos.setModel(modeloTabla);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton borrar;
+    private javax.swing.JComboBox<String> categoria;
+    private javax.swing.JTextArea descripcion;
+    private javax.swing.JButton gasto;
+    private javax.swing.JSpinner importe;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable tablaGastos;
     // End of variables declaration//GEN-END:variables
 }

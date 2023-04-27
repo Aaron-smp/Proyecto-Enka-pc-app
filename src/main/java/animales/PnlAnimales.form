@@ -539,16 +539,16 @@
                 <Component class="javax.swing.JTable" name="tablaBovino">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Poppins" size="18" style="0"/>
+                      <Font name="Poppins" size="17" style="0"/>
                     </Property>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                       <Table columnCount="6" rowCount="0">
-                        <Column editable="true" title="N&#xba; identificacion" type="java.lang.Object"/>
-                        <Column editable="true" title="Fecha nacimiento" type="java.lang.Object"/>
-                        <Column editable="true" title="Sexo" type="java.lang.Object"/>
-                        <Column editable="true" title="Raza" type="java.lang.Object"/>
-                        <Column editable="true" title="Momento reproductivo" type="java.lang.Object"/>
-                        <Column editable="true" title="Vendido" type="java.lang.Boolean"/>
+                        <Column editable="false" title="N&#xba; identificacion" type="java.lang.Object"/>
+                        <Column editable="false" title="Fecha nacimiento" type="java.lang.Object"/>
+                        <Column editable="false" title="Sexo" type="java.lang.Object"/>
+                        <Column editable="false" title="Raza" type="java.lang.Object"/>
+                        <Column editable="false" title="Momento reproductivo" type="java.lang.Object"/>
+                        <Column editable="false" title="Vendido" type="java.lang.Boolean"/>
                       </Table>
                     </Property>
                     <Property name="showGrid" type="boolean" value="true"/>
@@ -570,7 +570,7 @@
                 <Component class="javax.swing.JTable" name="tablaPorcino">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Poppins" size="18" style="0"/>
+                      <Font name="Poppins" size="17" style="0"/>
                     </Property>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                       <Table columnCount="5" rowCount="4">
@@ -599,14 +599,14 @@
                 <Component class="javax.swing.JTable" name="tablaAves">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Poppins" size="18" style="0"/>
+                      <Font name="Poppins" size="17" style="0"/>
                     </Property>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                       <Table columnCount="4" rowCount="6">
-                        <Column editable="true" title="Lote" type="java.lang.Long"/>
-                        <Column editable="true" title="Cantidad" type="java.lang.Long"/>
-                        <Column editable="true" title="Fecha de compra" type="java.lang.Object"/>
-                        <Column editable="true" title="Vendido" type="java.lang.Boolean"/>
+                        <Column editable="false" title="Lote" type="java.lang.Long"/>
+                        <Column editable="false" title="Cantidad" type="java.lang.Long"/>
+                        <Column editable="false" title="Fecha de compra" type="java.lang.Object"/>
+                        <Column editable="false" title="Vendido" type="java.lang.Boolean"/>
                       </Table>
                     </Property>
                   </Properties>

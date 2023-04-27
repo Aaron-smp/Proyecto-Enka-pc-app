@@ -22,8 +22,9 @@ public class PnlBase extends javax.swing.JPanel {
         initComponents();
         this.firestore = firestore;
         PnlVentas ventas = new PnlVentas(this.firestore);
-        PnlGastos gastos = new PnlGastos();
+        PnlGastos gastos = new PnlGastos(this.firestore);
         ventas.actualizarVentas();
+        gastos.actualizarGastos();
         base.add(ventas, "ventas");
         base.add(gastos, "gastos");
     }

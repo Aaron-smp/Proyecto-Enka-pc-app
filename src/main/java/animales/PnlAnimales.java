@@ -19,7 +19,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import utils.UtilsAnimales;
@@ -47,6 +49,21 @@ public class PnlAnimales extends javax.swing.JPanel {
         header.setFont(headerFont);
         this.firestore = firestore;
         this.frame = frame;
+        
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        
+        for (int i = 0; i < tablaBovino.getColumnCount()-1; i++) {
+            tablaBovino.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+        
+        for (int i = 0; i < tablaPorcino.getColumnCount()-1; i++) {
+            tablaPorcino.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+        
+        for (int i = 0; i < tablaAves.getColumnCount()-1; i++) {
+            tablaAves.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
     }
 
     /**
@@ -348,7 +365,7 @@ public class PnlAnimales extends javax.swing.JPanel {
         tablasPane.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         tablasPane.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
 
-        tablaBovino.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        tablaBovino.setFont(new java.awt.Font("Poppins", 0, 17)); // NOI18N
         tablaBovino.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -360,9 +377,16 @@ public class PnlAnimales extends javax.swing.JPanel {
             Class[] types = new Class [] {
                 java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         tablaBovino.setShowGrid(true);
@@ -370,7 +394,7 @@ public class PnlAnimales extends javax.swing.JPanel {
 
         tablasPane.addTab("Bovino", jScrollPane2);
 
-        tablaPorcino.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        tablaPorcino.setFont(new java.awt.Font("Poppins", 0, 17)); // NOI18N
         tablaPorcino.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -401,7 +425,7 @@ public class PnlAnimales extends javax.swing.JPanel {
 
         tablasPane.addTab("Porcino", jScrollPane3);
 
-        tablaAves.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        tablaAves.setFont(new java.awt.Font("Poppins", 0, 17)); // NOI18N
         tablaAves.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -418,9 +442,16 @@ public class PnlAnimales extends javax.swing.JPanel {
             Class[] types = new Class [] {
                 java.lang.Long.class, java.lang.Long.class, java.lang.Object.class, java.lang.Boolean.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         jScrollPane4.setViewportView(tablaAves);

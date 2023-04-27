@@ -10,12 +10,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
 import com.google.firebase.auth.UserRecord.CreateRequest;
+import java.awt.Font;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import utils.UtilsPerfil;
 
 /**
@@ -35,6 +37,9 @@ public class PnlPerfil extends javax.swing.JPanel {
         initComponents();
         this.firestore = firestore;
         this.frame = frame;
+        Font headerFont = new Font("Segoe UI", Font.PLAIN, 18);
+        JTableHeader header = tablaUsuarios.getTableHeader();
+        header.setFont(headerFont);
     }
 
     /**
@@ -240,7 +245,7 @@ public class PnlPerfil extends javax.swing.JPanel {
 
         jPanel11.setLayout(new java.awt.BorderLayout());
 
-        tablaUsuarios.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        tablaUsuarios.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
         tablaUsuarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
@@ -392,6 +397,7 @@ public class PnlPerfil extends javax.swing.JPanel {
                         .setPassword(contrasena);
                 UserRecord userRecord = FirebaseAuth.getInstance().createUser(request);
                 util.introducirUsuario(user, contrasena, userRecord.getUid());
+                Thread.sleep(100);
                 refrescarUsuarios();
                 JOptionPane.showMessageDialog(null, "Usuario creado exitosamente: " + userRecord.getUid());
             } catch (IllegalArgumentException e) {
@@ -399,6 +405,8 @@ public class PnlPerfil extends javax.swing.JPanel {
             } catch (FirebaseAuthException ex) {
                 Logger.getLogger(PnlPerfil.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(null, "El email ya esta registrado");
+            } catch (InterruptedException ex) {
+                Logger.getLogger(PnlPerfil.class.getName()).log(Level.SEVERE, null, ex);
             }
         }else{
             JOptionPane.showMessageDialog(null, "Faltan datos para crear el usuario");

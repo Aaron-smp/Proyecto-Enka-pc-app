@@ -9,6 +9,7 @@ import com.google.cloud.firestore.CollectionReference;
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.Query;
+import com.google.cloud.firestore.Query.Direction;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.WriteResult;
@@ -104,7 +105,7 @@ public class UtilsVentas {
         return listaCodigos;
     }
     
-    public void introducirVenta(String animal, String codigo, String fechaVenta, int iva, float precio, float total){
+    public void introducirVenta(String animal, String codigo, String fechaVenta, int iva, float precio, float total, int kilogramos){
         Map<String, Object> datos = new HashMap<>();
         datos.put("animal", animal);
         datos.put("fechaVenta", fechaVenta);
@@ -112,6 +113,7 @@ public class UtilsVentas {
         datos.put("iva", iva);
         datos.put("precio", precio);
         datos.put("total", total);
+        datos.put("kilogramos", kilogramos);
         firestore.collection("ventas").add(datos);
     }
     
@@ -217,6 +219,49 @@ public class UtilsVentas {
         try {
             CollectionReference coleccion = firestore.collection("ventas");
             Query query = coleccion.whereEqualTo("codigo", codigo);
+            
+            ApiFuture<QuerySnapshot> querySnapshot = query.get();
+            for (QueryDocumentSnapshot document : querySnapshot.get().getDocuments()) {
+                document.getReference().delete();
+            }
+        } catch (InterruptedException ex) {
+            Logger.getLogger(UtilsVentas.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ExecutionException ex) {
+            Logger.getLogger(UtilsVentas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void introducirGasto(String categoria, float importe, String observaciones){
+        Map<String, Object> datos = new HashMap<>();
+        datos.put("fecha", obtenerFechaHoraActual());
+        datos.put("categoria", categoria);
+        datos.put("importe", importe);
+        datos.put("observaciones", observaciones);
+        firestore.collection("gastos").add(datos);
+    }
+    
+    public ArrayList<QueryDocumentSnapshot> getGastos(){
+        ArrayList<QueryDocumentSnapshot> documentos = new ArrayList<QueryDocumentSnapshot>();
+        try {
+            CollectionReference animalesRef = firestore.collection("gastos");
+            Query ventasQuery = animalesRef.orderBy("fecha", Direction.DESCENDING);
+            
+            ApiFuture<QuerySnapshot> querySnapshot = ventasQuery.get();
+            QuerySnapshot queryResult = querySnapshot.get();
+            documentos.addAll(queryResult.getDocuments());
+            
+        } catch (InterruptedException ex) {
+            Logger.getLogger(UtilsAnimales.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ExecutionException ex) {
+            Logger.getLogger(UtilsAnimales.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return documentos;
+    }
+    
+    public void borrarGasto(String fecha){
+        try {
+            CollectionReference coleccion = firestore.collection("gastos");
+            Query query = coleccion.whereEqualTo("fecha", fecha);
             
             ApiFuture<QuerySnapshot> querySnapshot = query.get();
             for (QueryDocumentSnapshot document : querySnapshot.get().getDocuments()) {

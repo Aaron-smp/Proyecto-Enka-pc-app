@@ -250,7 +250,18 @@ public class EnviarCorreo {
             mail.setRemitentes(mensajes[i].getFrom());
             mail.setFechaRecibido(mensajes[i].getReceivedDate().toString());
             mail.setAsunto(mensajes[i].getSubject());
-            mail.setCuerpo(mensajes[i].getContent().toString());
+            
+            if (mensajes[i].isMimeType("multipart/*")) {
+                MimeMultipart multipart = (MimeMultipart) mensajes[i].getContent();
+                for (int e = 0; e < multipart.getCount(); e++) {
+                    BodyPart bodyPart = multipart.getBodyPart(e);
+                    if (bodyPart.isMimeType("text/html")) {
+                        mail.setCuerpo(bodyPart.getContent().toString());
+                    }
+                }
+            }else{
+                mail.setCuerpo(mensajes[i].getContent().toString());
+            }
             emails.add(mail);
         }
         

@@ -214,6 +214,7 @@ public class PnlCorreo extends javax.swing.JPanel {
         if (evt.getClickCount() == 2) {
             int indice = listaEntrada.locationToIndex(evt.getPoint());
             Email email = emails.get(indice);
+            System.out.println(email.getCuerpo());
             WebViewPanel vista = new WebViewPanel(email.getCuerpo());
             vista.loadContent();
             cardLayout.add(vista, "vista");
@@ -276,11 +277,10 @@ public class PnlCorreo extends javax.swing.JPanel {
             for(int i = emailsNuevos.size()-1; i >= 0; i--){
                 String remitente = emailsNuevos.get(i).getRemitentePrincipal();
                 String asunto = emailsNuevos.get(i).getAsunto();
-                System.out.println(emailsNuevos.get(i).getAsunto());
-                System.out.println(emails.get(i).getAsunto());
+                
                 if(!emailsNuevos.get(i).getAsunto().equals(emails.get(i).getAsunto())){
                     model.add(0, obtenerRemitente(remitente) + " | Asunto: " + asunto);
-                    emails.add(emailsNuevos.get(i));
+                    emails.add(0,emailsNuevos.get(i));
                 }
                 try {
                     Thread.sleep(300);
