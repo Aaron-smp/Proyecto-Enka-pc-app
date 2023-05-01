@@ -22,6 +22,8 @@ import java.util.logging.Logger;
 public class UtilsInicio {
     
     private Firestore firestore;
+    private int ingresos;
+    private int gastos;
     
     public UtilsInicio(){
     }
@@ -84,15 +86,31 @@ public class UtilsInicio {
     }
     
     public int getBeneficios(){
-        return 0;
+        int beneficios = ingresos - gastos;
+        return beneficios;
     }
     
     public int getKgPienso(){
-        return 0;
+        UtilsVentas util = new UtilsVentas(firestore);
+        List<QueryDocumentSnapshot> kilos = util.getGastos();
+        int kilosPienso = 0;
+        for(QueryDocumentSnapshot document : kilos){
+            if(document.getString("categoria").equals("Pienso")){
+                kilosPienso += document.getLong("kilos");
+            }
+        }
+        return kilosPienso;
     }
     
     public int getGastos(){
-        return 0;
+        UtilsVentas util = new UtilsVentas(firestore);
+        List<QueryDocumentSnapshot> gastos = util.getGastos();
+        int totalGastos = 0;
+        for(QueryDocumentSnapshot document : gastos){
+            totalGastos += document.getLong("importe");
+        }
+        this.gastos = totalGastos;
+        return totalGastos;
     }
     
     public int getIngresos(){
@@ -102,11 +120,20 @@ public class UtilsInicio {
         for(QueryDocumentSnapshot document : ventas){
             totalIngresos += document.getLong("total");
         }
+        this.ingresos = totalIngresos;
         return totalIngresos;
     }
     
     public int getEmpleados(){
-        return 0;
+        UtilsVentas util = new UtilsVentas(firestore);
+        List<QueryDocumentSnapshot> gastos = util.getGastos();
+        int totalEmpleados = 0;
+        for(QueryDocumentSnapshot document : gastos){
+            if(document.getString("categoria").equals("Nomina")){
+                totalEmpleados += 1;
+            }
+        }
+        return totalEmpleados;
     }
 }
 

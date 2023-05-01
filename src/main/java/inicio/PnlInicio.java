@@ -5,6 +5,9 @@
 package inicio;
 
 import com.google.cloud.firestore.Firestore;
+import java.awt.Color;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import utils.UtilsInicio;
 
@@ -24,7 +27,24 @@ public class PnlInicio extends javax.swing.JPanel {
         this.firestore = firestore;
         ganaderia.setText("Ganaderia: " + nombres[0]);
         ganadero.setText("Bienvenido " + nombres[1] + "!");
-        updateStats();
+        
+        Thread h1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(true){
+                    try {
+                        updateStats();
+                        updateUI();
+                        Thread.sleep(3000);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(PnlInicio.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                
+            }
+        });
+        
+        h1.start();
     }
 
     /**
@@ -167,6 +187,7 @@ public class PnlInicio extends javax.swing.JPanel {
         int numBovino = util.getNumberBovinos();
         int numPorcino = util.getNumberPorcinos();
         int numAves = util.getNumberAves();
+        
         nBovinos.setText("Nº de bovinos: " + numBovino);
         nPorcino.setText("Nº de porcinos: " + numPorcino);
         nAves.setText("Nº de aves: " + numAves);
@@ -174,6 +195,22 @@ public class PnlInicio extends javax.swing.JPanel {
         porcin.setToolTipText("Nº de porcinos: " + numPorcino);
         aves.setToolTipText("Nº de aves: " + numAves);
         ingresos.setText("Ingresos: " + util.getIngresos() + "€");
+        gastos.setText("Gastos: " + util.getGastos() + "€");
+        piensoKg.setText("Consumo de pienso: " + util.getKgPienso() + "KG");
+        empleados.setText("Empleados: " + util.getEmpleados());
+        
+        int beneficio = util.getBeneficios();
+        
+        if(beneficio > 0){
+            beneficios.setText("Beneficios: " + beneficio + "€");
+            beneficios.setForeground(Color.GREEN);
+        }else if(beneficio < 0){
+            beneficios.setText("Beneficios: " + beneficio + "€");
+            beneficios.setForeground(Color.RED);
+        }else{
+            beneficios.setText("Beneficios: " + beneficio + "€");
+            beneficios.setForeground(Color.BLACK);
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -231,12 +231,15 @@ public class UtilsVentas {
         }
     }
     
-    public void introducirGasto(String categoria, float importe, String observaciones){
+    public void introducirGasto(String categoria, float importe, String observaciones, float kilos){
         Map<String, Object> datos = new HashMap<>();
         datos.put("fecha", obtenerFechaHoraActual());
         datos.put("categoria", categoria);
         datos.put("importe", importe);
         datos.put("observaciones", observaciones);
+        if(kilos != 0){
+            datos.put("kilos", kilos);
+        }
         firestore.collection("gastos").add(datos);
     }
     

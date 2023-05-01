@@ -221,6 +221,11 @@ public class PnlVentas extends javax.swing.JPanel {
                     util.introducirVenta((String) animal.getSelectedItem(), (String) codigos.getSelectedItem(), util.obtenerFechaHoraActual(),
                             IVA, (float) precio.getValue(), util.getPrecioConIVA((float) precio.getValue(), IVA),(int) peso.getValue());
                     util.venderAnimal("Bovino", (String)codigos.getSelectedItem());
+                    try {
+                        Thread.sleep(50);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(PnlVentas.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     actualizarVentas();
                     DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>(util.getCodigos("Bovino").toArray(new String[0]));
                     codigos.setModel(modelo);
@@ -228,6 +233,11 @@ public class PnlVentas extends javax.swing.JPanel {
                     util.introducirVenta((String) animal.getSelectedItem(), (String) codigos.getSelectedItem(), util.obtenerFechaHoraActual(),
                             IVA, (float) precio.getValue(), util.getPrecioConIVA((float) precio.getValue(), IVA),(int) peso.getValue());
                     util.venderAnimal("Porcino", (String)codigos.getSelectedItem());
+                    try {
+                        Thread.sleep(50);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(PnlVentas.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     actualizarVentas();
                     DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>(util.getCodigos("Porcino").toArray(new String[0]));
                     codigos.setModel(modelo);
@@ -235,6 +245,11 @@ public class PnlVentas extends javax.swing.JPanel {
                     util.introducirVenta((String) animal.getSelectedItem(), (String) codigos.getSelectedItem(), util.obtenerFechaHoraActual(),
                             IVA, (float) precio.getValue(), util.getPrecioConIVA((float) precio.getValue(), IVA),(int) peso.getValue());
                     util.venderAnimal("Aves", (String)codigos.getSelectedItem());
+                    try {
+                        Thread.sleep(50);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(PnlVentas.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     actualizarVentas();
                     DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>(util.getCodigos("Aves").toArray(new String[0]));
                     codigos.setModel(modelo);
@@ -242,7 +257,6 @@ public class PnlVentas extends javax.swing.JPanel {
             }else{
                 JOptionPane.showMessageDialog(null, "No se puede vender a 0€", "Informacion", 1);
             }
-            
         }
     }//GEN-LAST:event_venderActionPerformed
 

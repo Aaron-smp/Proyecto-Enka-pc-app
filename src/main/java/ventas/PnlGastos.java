@@ -88,6 +88,8 @@ public class PnlGastos extends javax.swing.JPanel {
         jPanel6 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         categoria = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
+        kilos = new javax.swing.JSpinner();
         jLabel5 = new javax.swing.JLabel();
         importe = new javax.swing.JSpinner();
         jLabel2 = new javax.swing.JLabel();
@@ -135,7 +137,24 @@ public class PnlGastos extends javax.swing.JPanel {
 
         categoria.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
         categoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pienso", "Nomina", "Veterinario", "Transporte", "Otro" }));
+        categoria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                categoriaActionPerformed(evt);
+            }
+        });
         jPanel6.add(categoria);
+
+        jLabel4.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel4.setText("Kilos");
+        jLabel4.setMaximumSize(new java.awt.Dimension(120, 28));
+        jLabel4.setPreferredSize(new java.awt.Dimension(120, 28));
+        jPanel6.add(jLabel4);
+
+        kilos.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        kilos.setModel(new javax.swing.SpinnerNumberModel(0.0f, 0.0f, null, 1.0f));
+        kilos.setPreferredSize(new java.awt.Dimension(90, 34));
+        jPanel6.add(kilos);
 
         jLabel5.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -145,7 +164,7 @@ public class PnlGastos extends javax.swing.JPanel {
 
         importe.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
         importe.setModel(new javax.swing.SpinnerNumberModel(1.0f, 1.0f, null, 1.0f));
-        importe.setPreferredSize(new java.awt.Dimension(90, 34));
+        importe.setPreferredSize(new java.awt.Dimension(110, 34));
         jPanel6.add(importe);
 
         jLabel2.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
@@ -247,12 +266,19 @@ public class PnlGastos extends javax.swing.JPanel {
 
     private void gastoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gastoActionPerformed
         UtilsVentas util = new UtilsVentas(this.firestore);
-        util.introducirGasto((String)categoria.getSelectedItem(), (float) importe.getValue(), descripcion.getText());
+        float kilogram = 0;
+        if(categoria.getSelectedItem().equals("Pienso")){
+            kilogram = (float) kilos.getValue();
+        }
+        
+        util.introducirGasto((String)categoria.getSelectedItem(), (float) importe.getValue(), 
+                descripcion.getText(), kilogram);
         try {
             Thread.sleep(150);
         } catch (InterruptedException ex) {
             Logger.getLogger(PnlGastos.class.getName()).log(Level.SEVERE, null, ex);
         }
+        this.kilos.setValue(0);
         actualizarGastos();
     }//GEN-LAST:event_gastoActionPerformed
 
@@ -268,6 +294,16 @@ public class PnlGastos extends javax.swing.JPanel {
         }
         actualizarGastos();
     }//GEN-LAST:event_borrarActionPerformed
+
+    private void categoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_categoriaActionPerformed
+        if(categoria.getSelectedItem().equals("Pienso")){
+            kilos.setVisible(true);
+            jLabel4.setVisible(true);
+        }else{
+            kilos.setVisible(false);
+            jLabel4.setVisible(false);
+        }
+    }//GEN-LAST:event_categoriaActionPerformed
     
     public void actualizarGastos(){
         UtilsVentas util = new UtilsVentas(firestore);
@@ -279,7 +315,12 @@ public class PnlGastos extends javax.swing.JPanel {
             String fecha = documento.getString("fecha");
             Long importe = documento.getLong("importe");
             String observaciones = documento.getString("observaciones");
-            
+            if(categoria.equals("Pienso")){
+                double kilos = documento.getDouble("kilos");
+                if(kilos != 0){
+                    observaciones += "\n" + kilos + " kilogramos";
+                }
+            }
             modeloTabla.addRow(new Object[] {fecha, categoria, importe, observaciones});
         }
         tablaGastos.setModel(modeloTabla);
@@ -294,6 +335,7 @@ public class PnlGastos extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -304,6 +346,7 @@ public class PnlGastos extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JSpinner kilos;
     private javax.swing.JTable tablaGastos;
     // End of variables declaration//GEN-END:variables
 }
