@@ -5,11 +5,14 @@
 package com.mycompany.enka;
 
 import animales.PnlAnimales;
+import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.intellijthemes.FlatGradiantoNatureGreenIJTheme;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatArcDarkIJTheme;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatGitHubContrastIJTheme;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatNightOwlIJTheme;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatSolarizedLightIJTheme;
+import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import com.google.api.core.ApiFuture;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.firestore.CollectionReference;
@@ -26,6 +29,7 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.Insets;
 import java.awt.Point;
 import java.io.IOException;
 import java.io.InputStream;
@@ -58,8 +62,8 @@ public class Enka extends javax.swing.JFrame {
     private final Color SOLEADO_CLA = new Color(253, 246, 247);
     private final Color SOLEADO_OSC = new Color(213, 206, 187);
     //Noche oscura
-    private final Color NOCHE_CLA = new Color(90, 90, 100);
-    private final Color NOCHE_OSC = new Color(27, 32, 43);
+    private final Color NOCHE_CLA = new Color(220, 220, 220);
+    private final Color NOCHE_OSC = new Color(30, 30, 30);
     //Azul zafiro
     private final Color AZUL_CLA = new Color(220, 220, 220);
     private final Color AZUL_OSC = new Color(1, 22, 39);
@@ -71,6 +75,8 @@ public class Enka extends javax.swing.JFrame {
     
     private boolean pantallaCom = false;
     
+    private PnlAnimales pnlAni;
+    
     public Enka() {
         initComponents();
         crearConexion();
@@ -79,17 +85,22 @@ public class Enka extends javax.swing.JFrame {
         this.setIconImage(icono.getImage());
         CardLayout card = new CardLayout();
         pantallaPrincipal.setLayout(card);
-        PnlAnimales pnlAni = new PnlAnimales(this.firestore, this);
-        pnlAni.refrescarBovino();
-        pnlAni.refrescarPorcino();
-        pnlAni.refrescarAves();
+        pnlAni = new PnlAnimales(this.firestore, this);;
+        
         String[] nombres = datosPerf();
         PnlInicio pnlIni = new PnlInicio(nombres, firestore);
         PnlBase pnlVent = new PnlBase(this.firestore);
         PnlCorreo pnlCorre = new PnlCorreo(this.firestore);
         PnlPerfil pnlPerf = new PnlPerfil(this.firestore, this);
-        pnlPerf.iniciarDatos();
-        pnlPerf.refrescarUsuarios();
+        Thread h2 = new Thread(new Runnable(){
+            @Override
+            public void run() {
+                pnlPerf.iniciarDatos();
+                pnlPerf.refrescarUsuarios();
+            }
+            
+        });
+        h2.start();
         pantallaPrincipal.add(pnlIni, "inicio");
         pantallaPrincipal.add(pnlAni, "animales");
         pantallaPrincipal.add(pnlVent, "ventas");
@@ -426,6 +437,16 @@ public class Enka extends javax.swing.JFrame {
     }//GEN-LAST:event_pnlInicioMouseClicked
 
     private void pnlAnimalesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlAnimalesMouseClicked
+        Thread h1 = new Thread(new Runnable(){
+            @Override
+            public void run() {
+                pnlAni.refrescarBovino();
+                pnlAni.refrescarPorcino();
+                pnlAni.refrescarAves();
+            }
+
+        });
+        h1.start();
         CardLayout card = (CardLayout) pantallaPrincipal.getLayout();
         card.show(pantallaPrincipal, "animales");
         this.setTitle("ENKA | Animales");
@@ -495,7 +516,7 @@ public class Enka extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         try {
-            UIManager.setLookAndFeel(new FlatGitHubContrastIJTheme());
+            UIManager.setLookAndFeel(new FlatMacLightLaf());
             SwingUtilities.updateComponentTreeUI(this);
             oscuro = DEFAULT_OSC;
             claro = DEFAULT_CLA;
@@ -517,7 +538,7 @@ public class Enka extends javax.swing.JFrame {
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         try {
-            UIManager.setLookAndFeel(new FlatArcDarkIJTheme());
+            UIManager.setLookAndFeel(new FlatMacDarkLaf());
             SwingUtilities.updateComponentTreeUI(this);
             oscuro = NOCHE_OSC;
             claro = NOCHE_CLA;
@@ -751,8 +772,13 @@ public class Enka extends javax.swing.JFrame {
      */
     public static void main(String args[]) throws IOException {
         /* Set the Nimbus look and feel */
-        FlatGitHubContrastIJTheme.setup();
-        
+        FlatMacLightLaf.setup();
+        UIManager.put( "Button.arc", 30 );
+        UIManager.put( "TextComponent.arc", 5 );
+        UIManager.put( "ScrollBar.thumbArc", 40 );
+        UIManager.put( "ScrollBar.thumbInsets", new Insets( 2, 2, 2, 2 ) );
+        UIManager.put( "TabbedPane.showTabSeparators", true );
+        UIManager.put( "TextComponent.arc", 20 );
         //</editor-fold>
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {

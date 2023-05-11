@@ -121,12 +121,13 @@ public class PnlCorreo extends javax.swing.JPanel {
 
         jPanel1.add(jPanel3, java.awt.BorderLayout.CENTER);
 
-        jPanel2.setPreferredSize(new java.awt.Dimension(866, 130));
+        jPanel2.setMaximumSize(new java.awt.Dimension(500, 2147483647));
+        jPanel2.setPreferredSize(new java.awt.Dimension(765, 130));
         jPanel2.setLayout(new java.awt.BorderLayout());
 
         jLabel1.setFont(new java.awt.Font("Poppins", 0, 30)); // NOI18N
         jLabel1.setText("Acciones");
-        jPanel2.add(jLabel1, java.awt.BorderLayout.NORTH);
+        jPanel2.add(jLabel1, java.awt.BorderLayout.CENTER);
 
         jPanel4.setPreferredSize(new java.awt.Dimension(866, 50));
         jPanel4.setLayout(new java.awt.GridLayout(1, 5));
@@ -142,6 +143,11 @@ public class PnlCorreo extends javax.swing.JPanel {
 
         jButton2.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
         jButton2.setText("Leer correo");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         jPanel4.add(jButton2);
 
         refrescar.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
@@ -171,7 +177,7 @@ public class PnlCorreo extends javax.swing.JPanel {
         });
         jPanel4.add(jButton7);
 
-        jPanel2.add(jPanel4, java.awt.BorderLayout.CENTER);
+        jPanel2.add(jPanel4, java.awt.BorderLayout.SOUTH);
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_END);
 
@@ -242,6 +248,18 @@ public class PnlCorreo extends javax.swing.JPanel {
         model.removeElementAt(listaEntrada.getSelectedIndex());
         listaEntrada.updateUI();
     }//GEN-LAST:event_eliminarActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        int indice = listaEntrada.getSelectedIndex();    
+        Email email = emails.get(indice);
+        System.out.println(email.getCuerpo());
+        WebViewPanel vista = new WebViewPanel(email.getCuerpo());
+        vista.loadContent();
+        cardLayout.add(vista, "vista");
+        CardLayout card = (CardLayout) cardLayout.getLayout();
+        card.show(cardLayout, "vista");
+        bandeja.setText("Email");
+    }//GEN-LAST:event_jButton2ActionPerformed
     
     private void refrescarListaCorreos(){
         UtilsCorreo util = new UtilsCorreo(firestore);

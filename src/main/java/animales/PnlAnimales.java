@@ -9,6 +9,7 @@ import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.firebase.cloud.FirestoreClient;
+import java.awt.Color;
 import java.awt.Font;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -40,7 +41,7 @@ public class PnlAnimales extends javax.swing.JPanel {
     
     public PnlAnimales(Firestore firestore, JFrame frame) {
         initComponents();
-        Font headerFont = new Font("Segoe UI", Font.PLAIN, 18);
+        Font headerFont = new Font("Poppins Light", Font.PLAIN, 18);
         JTableHeader header = tablaBovino.getTableHeader();
         header.setFont(headerFont);
         header = tablaPorcino.getTableHeader();
@@ -143,7 +144,7 @@ public class PnlAnimales extends javax.swing.JPanel {
         jPanel3.setLayout(new java.awt.BorderLayout());
         jPanel3.add(jSeparator1, java.awt.BorderLayout.SOUTH);
 
-        addBovino.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        addBovino.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
         addBovino.setText("Añadir");
         addBovino.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -155,7 +156,7 @@ public class PnlAnimales extends javax.swing.JPanel {
         jPanel6.setMinimumSize(new java.awt.Dimension(900, 39));
         jPanel6.setPreferredSize(new java.awt.Dimension(900, 78));
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
         jLabel4.setText("Nº identificacion");
         jPanel6.add(jLabel4);
 
@@ -163,7 +164,7 @@ public class PnlAnimales extends javax.swing.JPanel {
         identificacionBovino.setPreferredSize(new java.awt.Dimension(200, 28));
         jPanel6.add(identificacionBovino);
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
         jLabel5.setText("Fecha de nacimiento/Compra");
         jPanel6.add(jLabel5);
 
@@ -176,6 +177,7 @@ public class PnlAnimales extends javax.swing.JPanel {
         });
         jPanel6.add(fechaNacBov);
 
+        hoy3.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         hoy3.setText("Hoy");
         hoy3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -184,7 +186,7 @@ public class PnlAnimales extends javax.swing.JPanel {
         });
         jPanel6.add(hoy3);
 
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
         jLabel6.setText("Sexo");
         jPanel6.add(jLabel6);
 
@@ -197,14 +199,14 @@ public class PnlAnimales extends javax.swing.JPanel {
         });
         jPanel6.add(sexoBovino);
 
-        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel7.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
         jLabel7.setText("Raza");
         jPanel6.add(jLabel7);
 
         raza.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jPanel6.add(raza);
 
-        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
         jLabel8.setText("Momento reproductivo");
         jPanel6.add(jLabel8);
 
@@ -213,7 +215,7 @@ public class PnlAnimales extends javax.swing.JPanel {
         momentoReproductivo.setEnabled(false);
         jPanel6.add(momentoReproductivo);
 
-        jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel9.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
         jLabel9.setText("Vendido");
         jPanel6.add(jLabel9);
         jPanel6.add(bovinoVend);
@@ -229,7 +231,7 @@ public class PnlAnimales extends javax.swing.JPanel {
 
         jPanel4.setLayout(new java.awt.BorderLayout());
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
         jLabel1.setText("Nº Identificacion");
         jPanel7.add(jLabel1);
 
@@ -237,7 +239,7 @@ public class PnlAnimales extends javax.swing.JPanel {
         identificacionPorcino.setPreferredSize(new java.awt.Dimension(200, 28));
         jPanel7.add(identificacionPorcino);
 
-        jLabel12.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel12.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
         jLabel12.setText("Fecha Nacimiento");
         jPanel7.add(jLabel12);
 
@@ -250,6 +252,7 @@ public class PnlAnimales extends javax.swing.JPanel {
         });
         jPanel7.add(fechaNacPor);
 
+        hoy2.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         hoy2.setText("Hoy");
         hoy2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -258,7 +261,7 @@ public class PnlAnimales extends javax.swing.JPanel {
         });
         jPanel7.add(hoy2);
 
-        jLabel13.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel13.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
         jLabel13.setText("Sexo");
         jPanel7.add(jLabel13);
 
@@ -266,7 +269,7 @@ public class PnlAnimales extends javax.swing.JPanel {
         sexoPorc.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Macho", "Hembra" }));
         jPanel7.add(sexoPorc);
 
-        jLabel11.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel11.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
         jLabel11.setText("Raza");
         jPanel7.add(jLabel11);
 
@@ -274,7 +277,7 @@ public class PnlAnimales extends javax.swing.JPanel {
         razaPorcino.setPreferredSize(new java.awt.Dimension(75, 28));
         jPanel7.add(razaPorcino);
 
-        jLabel14.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel14.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
         jLabel14.setText("Vendido");
         jPanel7.add(jLabel14);
         jPanel7.add(porcVend);
@@ -287,7 +290,7 @@ public class PnlAnimales extends javax.swing.JPanel {
         jLabel2.setText("Porcino");
         jPanel4.add(jLabel2, java.awt.BorderLayout.NORTH);
 
-        addPorcino.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        addPorcino.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
         addPorcino.setText("Añadir");
         addPorcino.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -300,7 +303,7 @@ public class PnlAnimales extends javax.swing.JPanel {
 
         jPanel5.setLayout(new java.awt.BorderLayout());
 
-        jLabel15.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel15.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
         jLabel15.setText("Lote");
         jPanel8.add(jLabel15);
 
@@ -308,7 +311,7 @@ public class PnlAnimales extends javax.swing.JPanel {
         lote.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
         jPanel8.add(lote);
 
-        jLabel16.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel16.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
         jLabel16.setText("Cantidad");
         jPanel8.add(jLabel16);
 
@@ -316,7 +319,7 @@ public class PnlAnimales extends javax.swing.JPanel {
         cantidadAves.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
         jPanel8.add(cantidadAves);
 
-        jLabel17.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel17.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
         jLabel17.setText("Fecha de compra");
         jPanel8.add(jLabel17);
 
@@ -329,6 +332,7 @@ public class PnlAnimales extends javax.swing.JPanel {
         });
         jPanel8.add(fechaCompraAve);
 
+        hoy.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         hoy.setText("Hoy");
         hoy.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -337,7 +341,7 @@ public class PnlAnimales extends javax.swing.JPanel {
         });
         jPanel8.add(hoy);
 
-        jLabel18.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel18.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
         jLabel18.setText("Vendido");
         jPanel8.add(jLabel18);
         jPanel8.add(aveVend);
@@ -349,7 +353,7 @@ public class PnlAnimales extends javax.swing.JPanel {
         jLabel3.setText("Aves      ");
         jPanel5.add(jLabel3, java.awt.BorderLayout.NORTH);
 
-        addAve.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        addAve.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
         addAve.setText("Añadir");
         addAve.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -460,7 +464,7 @@ public class PnlAnimales extends javax.swing.JPanel {
 
         jPanel2.add(tablasPane, java.awt.BorderLayout.CENTER);
 
-        borrarRow.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        borrarRow.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
         borrarRow.setText("Borrar");
         borrarRow.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -469,7 +473,7 @@ public class PnlAnimales extends javax.swing.JPanel {
         });
         jPanel9.add(borrarRow);
 
-        editarRow.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        editarRow.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
         editarRow.setText("Editar");
         editarRow.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

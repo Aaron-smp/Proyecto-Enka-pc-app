@@ -35,7 +35,7 @@ public class PnlInicio extends javax.swing.JPanel {
                     try {
                         updateStats();
                         updateUI();
-                        Thread.sleep(3000);
+                        Thread.sleep(60000);
                     } catch (InterruptedException ex) {
                         Logger.getLogger(PnlInicio.class.getName()).log(Level.SEVERE, null, ex);
                     }
