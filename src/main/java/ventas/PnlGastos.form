@@ -311,6 +311,7 @@
                 <Column editable="true" title="Observaciones" type="java.lang.Object"/>
               </Table>
             </Property>
+            <Property name="showGrid" type="boolean" value="true"/>
           </Properties>
         </Component>
       </SubComponents>

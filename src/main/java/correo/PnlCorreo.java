@@ -6,12 +6,18 @@ package correo;
 
 import com.google.cloud.firestore.Firestore;
 import java.awt.CardLayout;
+import java.awt.Font;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.mail.MessagingException;
 import javax.swing.DefaultListModel;
+import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
 import utils.UtilsCorreo;
 
 /**
@@ -33,19 +39,33 @@ public class PnlCorreo extends javax.swing.JPanel {
         this.firestore = firestore;
         UtilsCorreo util = new UtilsCorreo(firestore);
         PnlAjustesCorreo ajustes = new PnlAjustesCorreo(firestore);
-        cardLayout.add(panelEntrada, "entrada");
+        cardLayout.add(scroll, "entrada");
         cardLayout.add(ajustes, "ajustes");
         cardLayout.add(new PnlEnviarCorreo(this.firestore), "correo");
-        if(!util.getContraseña().isBlank() && !util.getEmail().isBlank()){
-            Thread h1 = new Thread(new Runnable(){
-            @Override
-            public void run() {
-                refrescarListaCorreos();
+        CardLayout card = (CardLayout) cardLayout.getLayout();
+        card.show(cardLayout, "entrada");
+        try{
+            if(!util.getContraseña().isBlank() && !util.getEmail().isEmpty()){
+                Thread h1 = new Thread(new Runnable(){
+                    @Override
+                    public void run() {
+                        refrescarListaCorreos();
+                    }
+                });
+                h1.start();
             }
-            
-        });
-        h1.start();
+        }catch(NullPointerException e){
+            e.printStackTrace();
         }
+        
+        Font headerFont = new Font("Poppins Light", Font.PLAIN, 22);
+        JTableHeader header = tablaCorreos.getTableHeader();
+        header.setFont(headerFont);
+        tablaCorreos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tablaCorreos.setRowSelectionAllowed(true);
+        tablaCorreos.setColumnSelectionAllowed(false);
+        
+        tablaCorreos.setRowHeight(60);
     }
 
     /**
@@ -60,6 +80,8 @@ public class PnlCorreo extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         cardLayout = new javax.swing.JPanel();
+        scroll = new javax.swing.JScrollPane();
+        tablaCorreos = new javax.swing.JTable();
         panelEntrada = new javax.swing.JScrollPane();
         listaEntrada = new javax.swing.JList<>();
         jPanel5 = new javax.swing.JPanel();
@@ -74,12 +96,47 @@ public class PnlCorreo extends javax.swing.JPanel {
         refrescar = new javax.swing.JButton();
         eliminar = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
+        jPanel7 = new javax.swing.JPanel();
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         jPanel3.setLayout(new java.awt.BorderLayout());
 
         cardLayout.setLayout(new java.awt.CardLayout());
+
+        tablaCorreos.setFont(new java.awt.Font("Poppins", 0, 20)); // NOI18N
+        tablaCorreos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Remitente", "Asunto", "Fecha recibido"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tablaCorreos.setShowGrid(true);
+        tablaCorreos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaCorreosMouseClicked(evt);
+            }
+        });
+        scroll.setViewportView(tablaCorreos);
+
+        cardLayout.add(scroll, "card3");
 
         listaEntrada.setFont(new java.awt.Font("Poppins", 0, 20)); // NOI18N
         listaEntrada.setModel(new javax.swing.AbstractListModel<String>() {
@@ -127,7 +184,8 @@ public class PnlCorreo extends javax.swing.JPanel {
 
         jLabel1.setFont(new java.awt.Font("Poppins", 0, 30)); // NOI18N
         jLabel1.setText("Acciones");
-        jPanel2.add(jLabel1, java.awt.BorderLayout.CENTER);
+        jLabel1.setPreferredSize(new java.awt.Dimension(136, 60));
+        jPanel2.add(jLabel1, java.awt.BorderLayout.NORTH);
 
         jPanel4.setPreferredSize(new java.awt.Dimension(866, 50));
         jPanel4.setLayout(new java.awt.GridLayout(1, 5));
@@ -177,19 +235,22 @@ public class PnlCorreo extends javax.swing.JPanel {
         });
         jPanel4.add(jButton7);
 
-        jPanel2.add(jPanel4, java.awt.BorderLayout.SOUTH);
+        jPanel2.add(jPanel4, java.awt.BorderLayout.CENTER);
 
-        jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_END);
+        jPanel7.setPreferredSize(new java.awt.Dimension(918, 30));
+        jPanel2.add(jPanel7, java.awt.BorderLayout.SOUTH);
+
+        jPanel1.add(jPanel2, java.awt.BorderLayout.SOUTH);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 918, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 547, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 493, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -243,14 +304,15 @@ public class PnlCorreo extends javax.swing.JPanel {
     }//GEN-LAST:event_refrescarActionPerformed
 
     private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
-        recibirCorreos.eliminarCorreo(listaEntrada.getSelectedIndex());
-        DefaultListModel<String> model = (DefaultListModel<String>) listaEntrada.getModel();
-        model.removeElementAt(listaEntrada.getSelectedIndex());
-        listaEntrada.updateUI();
+        recibirCorreos.eliminarCorreo(tablaCorreos.getSelectedRow());
+        DefaultTableModel modelo = (DefaultTableModel) tablaCorreos.getModel();
+        modelo.removeRow(tablaCorreos.getSelectedRow());
+        emails.remove(tablaCorreos.getSelectedRow());
+        tablaCorreos.updateUI();
     }//GEN-LAST:event_eliminarActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        int indice = listaEntrada.getSelectedIndex();    
+        int indice = tablaCorreos.getSelectedRow();    
         Email email = emails.get(indice);
         System.out.println(email.getCuerpo());
         WebViewPanel vista = new WebViewPanel(email.getCuerpo());
@@ -260,29 +322,51 @@ public class PnlCorreo extends javax.swing.JPanel {
         card.show(cardLayout, "vista");
         bandeja.setText("Email");
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void tablaCorreosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaCorreosMouseClicked
+        if (evt.getClickCount() == 2) {
+            int indice = tablaCorreos.getSelectedRow();
+            Email email = emails.get(indice);
+            System.out.println(email.getCuerpo());
+            WebViewPanel vista = new WebViewPanel(email.getCuerpo());
+            vista.loadContent();
+            cardLayout.add(vista, "vista");
+            CardLayout card = (CardLayout) cardLayout.getLayout();
+            card.show(cardLayout, "vista");
+            bandeja.setText("Email");
+        }
+    }//GEN-LAST:event_tablaCorreosMouseClicked
     
     private void refrescarListaCorreos(){
         UtilsCorreo util = new UtilsCorreo(firestore);
-        recibirCorreos = new EnviarCorreo("", "",
-                        "", util.getPuertoSmtp(),
-                        util.getServidorSmtp(), util.getEmail(), util.getContraseña());
-        try {
-            emails = recibirCorreos.leerCorreo();
-        } catch (MessagingException ex) {
-            Logger.getLogger(PnlCorreo.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(PnlCorreo.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        DefaultListModel<String> model = new DefaultListModel<>();
-        listaEntrada.setModel(model);
-        for(int i = 0; i < emails.size(); i++){
-            String remitente = emails.get(i).getRemitentePrincipal();
-            String asunto = emails.get(i).getAsunto();
-            model.addElement(obtenerRemitente(remitente) + " | Asunto: " + asunto);
+        String contra = util.getContraseña();
+        if(contra != null){
+            recibirCorreos = new EnviarCorreo("", "",
+                            "", util.getPuertoSmtp(),
+                            util.getServidorSmtp(), util.getEmail(), contra);
             try {
-                Thread.sleep(100);
-            } catch (InterruptedException ex) {
+                emails = recibirCorreos.leerCorreo();
+            } catch (MessagingException ex) {
                 Logger.getLogger(PnlCorreo.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(PnlCorreo.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            DefaultListModel<String> model = new DefaultListModel<>();
+            DefaultTableModel modelo = (DefaultTableModel) tablaCorreos.getModel();
+            listaEntrada.setModel(model);
+            tablaCorreos.setModel(modelo);
+
+            for(int i = 0; i < emails.size(); i++){
+                String remitente = emails.get(i).getRemitentePrincipal();
+                String asunto = emails.get(i).getAsunto();
+                String fecha = emails.get(i).getFechaRecibido();
+                model.addElement(remitente + " | Asunto: " + asunto + " | Fecha: " + fecha);
+                modelo.addRow(new Object[] {remitente, asunto, fecha});
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(PnlCorreo.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
     }
@@ -292,12 +376,16 @@ public class PnlCorreo extends javax.swing.JPanel {
             ArrayList<Email> emailsNuevos = new ArrayList();
             emailsNuevos = recibirCorreos.correosUltimaHora(emails);
             DefaultListModel<String> model = (DefaultListModel<String>) listaEntrada.getModel();
+            DefaultTableModel modelo = (DefaultTableModel) tablaCorreos.getModel();
+            tablaCorreos.setModel(modelo);
             for(int i = emailsNuevos.size()-1; i >= 0; i--){
                 String remitente = emailsNuevos.get(i).getRemitentePrincipal();
                 String asunto = emailsNuevos.get(i).getAsunto();
+                String fecha = emailsNuevos.get(i).getFechaRecibido();
                 
                 if(!emailsNuevos.get(i).getAsunto().equals(emails.get(i).getAsunto())){
                     model.add(0, obtenerRemitente(remitente) + " | Asunto: " + asunto);
+                    modelo.addRow(new Object[] {remitente, asunto, fecha});
                     emails.add(0,emailsNuevos.get(i));
                 }
                 try {
@@ -341,8 +429,11 @@ public class PnlCorreo extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JList<String> listaEntrada;
     private javax.swing.JScrollPane panelEntrada;
     private javax.swing.JButton refrescar;
+    private javax.swing.JScrollPane scroll;
+    private javax.swing.JTable tablaCorreos;
     // End of variables declaration//GEN-END:variables
 }

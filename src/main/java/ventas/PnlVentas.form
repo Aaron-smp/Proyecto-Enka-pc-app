@@ -49,6 +49,9 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Poppins" size="18" style="0"/>
                 </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="new ImageIcon(getClass().getResource(&quot;/iconos/carrito.png&quot;))" type="code"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Vender"/>
               </Properties>
               <Events>
@@ -242,6 +245,7 @@
                 <Column editable="true" title="Total &#x20ac;" type="java.lang.Float"/>
               </Table>
             </Property>
+            <Property name="showGrid" type="boolean" value="true"/>
           </Properties>
         </Component>
       </SubComponents>
@@ -250,6 +254,9 @@
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Poppins" size="18" style="0"/>
+        </Property>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="new ImageIcon(getClass().getResource(&quot;/iconos/borrar.png&quot;))" type="code"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Borrar"/>
       </Properties>

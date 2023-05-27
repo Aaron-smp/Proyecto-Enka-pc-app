@@ -9,7 +9,6 @@ import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.firebase.cloud.FirestoreClient;
-import java.awt.Color;
 import java.awt.Font;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -22,6 +21,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -44,10 +44,22 @@ public class PnlAnimales extends javax.swing.JPanel {
         Font headerFont = new Font("Poppins Light", Font.PLAIN, 18);
         JTableHeader header = tablaBovino.getTableHeader();
         header.setFont(headerFont);
+        tablaBovino.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tablaBovino.setRowSelectionAllowed(true);
+        tablaBovino.setColumnSelectionAllowed(false);
+        
         header = tablaPorcino.getTableHeader();
         header.setFont(headerFont);
+        tablaPorcino.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tablaPorcino.setRowSelectionAllowed(true);
+        tablaPorcino.setColumnSelectionAllowed(false);
+        
         header = tablaAves.getTableHeader();
         header.setFont(headerFont);
+        tablaAves.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tablaAves.setRowSelectionAllowed(true);
+        tablaAves.setColumnSelectionAllowed(false);
+
         this.firestore = firestore;
         this.frame = frame;
         
@@ -145,7 +157,10 @@ public class PnlAnimales extends javax.swing.JPanel {
         jPanel3.add(jSeparator1, java.awt.BorderLayout.SOUTH);
 
         addBovino.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
+        addBovino.setIcon(new ImageIcon(getClass().getResource("/iconos/anadir.png")));
         addBovino.setText("Añadir");
+        addBovino.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        addBovino.setIconTextGap(10);
         addBovino.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addBovinoActionPerformed(evt);
@@ -154,7 +169,7 @@ public class PnlAnimales extends javax.swing.JPanel {
         jPanel3.add(addBovino, java.awt.BorderLayout.LINE_END);
 
         jPanel6.setMinimumSize(new java.awt.Dimension(900, 39));
-        jPanel6.setPreferredSize(new java.awt.Dimension(900, 78));
+        jPanel6.setPreferredSize(new java.awt.Dimension(900, 100));
 
         jLabel4.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
         jLabel4.setText("Nº identificacion");
@@ -222,9 +237,11 @@ public class PnlAnimales extends javax.swing.JPanel {
 
         jPanel3.add(jPanel6, java.awt.BorderLayout.CENTER);
 
-        jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel10.setFont(new java.awt.Font("Poppins", 1, 20)); // NOI18N
+        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel10.setText("Bovino");
+        jLabel10.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jLabel10.setPreferredSize(new java.awt.Dimension(71, 55));
         jPanel3.add(jLabel10, java.awt.BorderLayout.NORTH);
 
         jPanel1.add(jPanel3);
@@ -285,13 +302,18 @@ public class PnlAnimales extends javax.swing.JPanel {
         jPanel4.add(jPanel7, java.awt.BorderLayout.CENTER);
         jPanel4.add(jSeparator2, java.awt.BorderLayout.SOUTH);
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel2.setFont(new java.awt.Font("Poppins", 1, 20)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Porcino");
+        jLabel2.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jLabel2.setPreferredSize(new java.awt.Dimension(78, 55));
         jPanel4.add(jLabel2, java.awt.BorderLayout.NORTH);
 
         addPorcino.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
+        addPorcino.setIcon(new ImageIcon(getClass().getResource("/iconos/anadir.png")));
         addPorcino.setText("Añadir");
+        addPorcino.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        addPorcino.setIconTextGap(10);
         addPorcino.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addPorcinoActionPerformed(evt);
@@ -348,13 +370,18 @@ public class PnlAnimales extends javax.swing.JPanel {
 
         jPanel5.add(jPanel8, java.awt.BorderLayout.CENTER);
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel3.setFont(new java.awt.Font("Poppins", 1, 20)); // NOI18N
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Aves      ");
+        jLabel3.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jLabel3.setPreferredSize(new java.awt.Dimension(75, 55));
         jPanel5.add(jLabel3, java.awt.BorderLayout.NORTH);
 
         addAve.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
+        addAve.setIcon(new ImageIcon(getClass().getResource("/iconos/anadir.png")));
         addAve.setText("Añadir");
+        addAve.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        addAve.setIconTextGap(10);
         addAve.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addAveActionPerformed(evt);
@@ -425,6 +452,7 @@ public class PnlAnimales extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tablaPorcino.setShowGrid(true);
         jScrollPane3.setViewportView(tablaPorcino);
 
         tablasPane.addTab("Porcino", jScrollPane3);
@@ -458,6 +486,7 @@ public class PnlAnimales extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tablaAves.setShowGrid(true);
         jScrollPane4.setViewportView(tablaAves);
 
         tablasPane.addTab("Aves", jScrollPane4);
@@ -465,7 +494,9 @@ public class PnlAnimales extends javax.swing.JPanel {
         jPanel2.add(tablasPane, java.awt.BorderLayout.CENTER);
 
         borrarRow.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        borrarRow.setIcon(new ImageIcon(getClass().getResource("/iconos/borrar.png")));
         borrarRow.setText("Borrar");
+        borrarRow.setPreferredSize(new java.awt.Dimension(140, 40));
         borrarRow.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 borrarRowActionPerformed(evt);
@@ -474,7 +505,9 @@ public class PnlAnimales extends javax.swing.JPanel {
         jPanel9.add(borrarRow);
 
         editarRow.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        editarRow.setIcon(new ImageIcon(getClass().getResource("/iconos/editar.png")));
         editarRow.setText("Editar");
+        editarRow.setPreferredSize(new java.awt.Dimension(140, 40));
         editarRow.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 editarRowActionPerformed(evt);
@@ -482,7 +515,10 @@ public class PnlAnimales extends javax.swing.JPanel {
         });
         jPanel9.add(editarRow);
 
+        refrescarTabla.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
         refrescarTabla.setIcon(new ImageIcon(getClass().getResource("/iconos/recargar.png")));
+        refrescarTabla.setText("Refrescar");
+        refrescarTabla.setPreferredSize(new java.awt.Dimension(155, 40));
         refrescarTabla.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 refrescarTablaActionPerformed(evt);
@@ -502,9 +538,9 @@ public class PnlAnimales extends javax.swing.JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 296, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -579,7 +615,6 @@ public class PnlAnimales extends javax.swing.JPanel {
         
         if(util.comprobarFormato(identificacionBovino.getText()) && util.comprobarFecha(fechaNacBov.getText())){
             util.introducirBovino(nIdent, fechaNac, sexo, razaS, momRepro, vendido);
-            JOptionPane.showMessageDialog(null, "Bovino " + nIdent + " insertado", "Insercion realizada", JOptionPane.INFORMATION_MESSAGE);
             List<QueryDocumentSnapshot> listaBovinos = util.getBovinos();
             DefaultTableModel modeloTabla = (DefaultTableModel) tablaBovino.getModel();
             modeloTabla.setRowCount(0);
@@ -605,7 +640,6 @@ public class PnlAnimales extends javax.swing.JPanel {
         if(util.comprobarFecha(fechaCompra)){
             util.introducirAves(nLote, cantAves, fechaCompra, vendido);
             refrescarAves();
-            JOptionPane.showMessageDialog(null, "Lote " + nLote + " insertado", "Insercion realizada", JOptionPane.INFORMATION_MESSAGE);
         }else{
             JOptionPane.showMessageDialog(null, "Error en la fecha\nTiene que ser (dd/mm/aaaa)", "Error en la fecha", JOptionPane.ERROR_MESSAGE);
         }
@@ -634,7 +668,6 @@ public class PnlAnimales extends javax.swing.JPanel {
         if(util.comprobarFormato(nIdentificacion) && util.comprobarFecha(fechaNac)){
             util.introducirPorcino(nIdentificacion, fechaNac, sexo, raza, vendido);
             refrescarPorcino();
-            JOptionPane.showMessageDialog(null, "Cerdo " + nIdentificacion + " insertado", "Insercion realizada", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_addPorcinoActionPerformed
 

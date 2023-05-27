@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import utils.UtilsPerfil;
@@ -37,9 +38,12 @@ public class PnlPerfil extends javax.swing.JPanel {
         initComponents();
         this.firestore = firestore;
         this.frame = frame;
-        Font headerFont = new Font("Segoe UI", Font.PLAIN, 18);
+        Font headerFont = new Font("Poppins Light", Font.PLAIN, 18);
         JTableHeader header = tablaUsuarios.getTableHeader();
         header.setFont(headerFont);
+        tablaUsuarios.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tablaUsuarios.setRowSelectionAllowed(true);
+        tablaUsuarios.setColumnSelectionAllowed(false);
     }
 
     /**
@@ -120,7 +124,7 @@ public class PnlPerfil extends javax.swing.JPanel {
 
         jPanel3.setLayout(new java.awt.BorderLayout());
 
-        jPanel4.setPreferredSize(new java.awt.Dimension(210, 147));
+        jPanel4.setPreferredSize(new java.awt.Dimension(400, 147));
         jPanel4.setLayout(new java.awt.GridLayout(5, 1));
 
         jLabel2.setFont(new java.awt.Font("Poppins", 0, 20)); // NOI18N
@@ -157,7 +161,7 @@ public class PnlPerfil extends javax.swing.JPanel {
         email.setPreferredSize(new java.awt.Dimension(350, 35));
         jPanel6.add(email);
 
-        editarEmail.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        editarEmail.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
         editarEmail.setText("Editar");
         editarEmail.setMaximumSize(new java.awt.Dimension(120, 29));
         editarEmail.setPreferredSize(new java.awt.Dimension(120, 30));
@@ -175,7 +179,7 @@ public class PnlPerfil extends javax.swing.JPanel {
         explotacion.setPreferredSize(new java.awt.Dimension(350, 35));
         jPanel7.add(explotacion);
 
-        editarExplotacion.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        editarExplotacion.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
         editarExplotacion.setText("Editar");
         editarExplotacion.setPreferredSize(new java.awt.Dimension(120, 30));
         editarExplotacion.addActionListener(new java.awt.event.ActionListener() {
@@ -192,7 +196,7 @@ public class PnlPerfil extends javax.swing.JPanel {
         user.setPreferredSize(new java.awt.Dimension(350, 35));
         jPanel8.add(user);
 
-        editarGanadero.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        editarGanadero.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
         editarGanadero.setText("Editar");
         editarGanadero.setPreferredSize(new java.awt.Dimension(120, 30));
         editarGanadero.addActionListener(new java.awt.event.ActionListener() {
@@ -221,7 +225,7 @@ public class PnlPerfil extends javax.swing.JPanel {
         passMail.setPreferredSize(new java.awt.Dimension(350, 35));
         jPanel16.add(passMail);
 
-        editarPassMail.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        editarPassMail.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
         editarPassMail.setText("Editar");
         editarPassMail.setPreferredSize(new java.awt.Dimension(120, 30));
         editarPassMail.addActionListener(new java.awt.event.ActionListener() {
@@ -257,6 +261,7 @@ public class PnlPerfil extends javax.swing.JPanel {
                 "UID Usuario", "Correo", "Contraseña"
             }
         ));
+        tablaUsuarios.setShowGrid(true);
         jScrollPane1.setViewportView(tablaUsuarios);
 
         jPanel11.add(jScrollPane1, java.awt.BorderLayout.CENTER);
@@ -284,7 +289,7 @@ public class PnlPerfil extends javax.swing.JPanel {
         jPanel17.setPreferredSize(new java.awt.Dimension(681, 60));
 
         jLabel6.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
-        jLabel6.setText("Email");
+        jLabel6.setText("Email:");
         jPanel17.add(jLabel6);
 
         emailUser.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
@@ -292,7 +297,7 @@ public class PnlPerfil extends javax.swing.JPanel {
         jPanel17.add(emailUser);
 
         jLabel7.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
-        jLabel7.setText("Contraseña");
+        jLabel7.setText("Contraseña:");
         jPanel17.add(jLabel7);
 
         passUser.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
@@ -440,6 +445,7 @@ public class PnlPerfil extends javax.swing.JPanel {
         ventana.setVisible(true);
         if(ventana.isContinuar()){
            util.updateContrasenaAdmin(ventana.getNuevaContrasena());
+            System.out.println(ventana.getNuevaContrasena());
         }
     }//GEN-LAST:event_cambiarPassActionPerformed
 

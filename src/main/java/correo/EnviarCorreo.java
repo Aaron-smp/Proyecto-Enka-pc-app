@@ -32,6 +32,8 @@ import javax.mail.search.ComparisonTerm;
 import javax.mail.search.MessageNumberTerm;
 import javax.mail.search.ReceivedDateTerm;
 import javax.mail.search.SearchTerm;
+import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 
 /**
  *
@@ -140,11 +142,13 @@ public class EnviarCorreo {
             mTransport.connect(emailFrom, passwordFrom);
             mTransport.sendMessage(mCorreo, mCorreo.getRecipients(Message.RecipientType.TO));
             mTransport.close();
-            
+            JOptionPane.showMessageDialog(null, "Correo enviado", "Información", INFORMATION_MESSAGE);
         } catch (NoSuchProviderException ex) {
             Logger.getLogger(EnviarCorreo.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error en el envio, compruebe la configuración y conexión a internet", "Información", INFORMATION_MESSAGE);
         } catch (MessagingException ex) {
             Logger.getLogger(EnviarCorreo.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error en el envio, compruebe la configuración y conexión a internet", "Información", INFORMATION_MESSAGE);
         }
     }
     

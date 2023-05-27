@@ -11,8 +11,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -33,9 +35,13 @@ public class PnlVentas extends javax.swing.JPanel {
     public PnlVentas(Firestore firestore) {
         initComponents();
         this.firestore = firestore;
-        Font headerFont = new Font("Segoe UI", Font.PLAIN, 18);
+        Font headerFont = new Font("Poppins Light", Font.PLAIN, 20);
         JTableHeader header = tablaVentas.getTableHeader();
         header.setFont(headerFont);
+        tablaVentas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tablaVentas.setRowSelectionAllowed(true);
+        tablaVentas.setColumnSelectionAllowed(false);
+        
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
         for (int i = 0; i < tablaVentas.getColumnCount(); i++) {
@@ -82,6 +88,7 @@ public class PnlVentas extends javax.swing.JPanel {
         jPanel4.setPreferredSize(new java.awt.Dimension(929, 50));
 
         vender.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        vender.setIcon(new ImageIcon(getClass().getResource("/iconos/carrito.png")));
         vender.setText("Vender");
         vender.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -183,11 +190,13 @@ public class PnlVentas extends javax.swing.JPanel {
                 return types [columnIndex];
             }
         });
+        tablaVentas.setShowGrid(true);
         jScrollPane1.setViewportView(tablaVentas);
 
         add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
         borrar.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        borrar.setIcon(new ImageIcon(getClass().getResource("/iconos/borrar.png")));
         borrar.setText("Borrar");
         borrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

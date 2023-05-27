@@ -177,7 +177,6 @@ public class PnlEnviarCorreo extends javax.swing.JPanel {
                         util.getServidorSmtp(), util.getEmail(), util.getContraseña());
                 correo.crearEmailConFichero(archivoAEnviar);
                 correo.enviarEmail();
-                JOptionPane.showMessageDialog(null, "Correo enviado", "Información", INFORMATION_MESSAGE);
             }
             
         });

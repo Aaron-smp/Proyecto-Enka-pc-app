@@ -114,7 +114,7 @@ public class RegistroSesion extends javax.swing.JDialog {
         jLabel1.setOpaque(true);
         jPanel1.add(jLabel1, java.awt.BorderLayout.NORTH);
 
-        jPanel6.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
         jPanel6.setLayout(new java.awt.BorderLayout());
 
         jPanel5.setBackground(new java.awt.Color(204, 204, 204));
@@ -125,6 +125,7 @@ public class RegistroSesion extends javax.swing.JDialog {
         jLabel6.setText("Nombre ganadero/administrador:");
         jPanel5.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, -1, 40));
 
+        nombreGan.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
         nombreGan.setMinimumSize(new java.awt.Dimension(71, 22));
         nombreGan.setPreferredSize(new java.awt.Dimension(71, 22));
         jPanel5.add(nombreGan, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 40, 350, 30));
@@ -135,9 +136,11 @@ public class RegistroSesion extends javax.swing.JDialog {
         jLabel3.setPreferredSize(new java.awt.Dimension(28, 28));
         jPanel5.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 90, 280, 37));
 
+        nombreExp.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
         nombreExp.setMinimumSize(new java.awt.Dimension(71, 22));
         jPanel5.add(nombreExp, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 90, 350, 30));
 
+        email.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
         email.setMinimumSize(new java.awt.Dimension(71, 22));
         jPanel5.add(email, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 140, 350, 30));
 
@@ -148,6 +151,8 @@ public class RegistroSesion extends javax.swing.JDialog {
         jLabel5.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
         jLabel5.setText("Contraseña:");
         jPanel5.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 190, 310, 30));
+
+        passwd.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
         jPanel5.add(passwd, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 190, 350, 30));
 
         jPanel6.add(jPanel5, java.awt.BorderLayout.CENTER);
@@ -217,8 +222,9 @@ public class RegistroSesion extends javax.swing.JDialog {
             char[] contraseña = passwd.getPassword();
             String passwdT = "";
             for(int i = 0; i < contraseña.length; i++){
-                passwdT += i;
+                passwdT += contraseña[i];
             }
+            System.out.println(passwdT);
             passwdT = getSHA256(passwdT);
             Map<String, Object> datos = new HashMap<>();
             datos.put("ganadero", nombre);
@@ -226,6 +232,7 @@ public class RegistroSesion extends javax.swing.JDialog {
             datos.put("email", emailT);
             datos.put("contraseña", passwdT);
             insertarDatos("empresa", "administrador", datos);
+            System.out.println(passwdT);
             continuar = true;
             this.dispose();
         }

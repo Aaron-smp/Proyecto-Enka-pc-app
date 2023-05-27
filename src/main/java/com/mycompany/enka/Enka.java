@@ -24,6 +24,7 @@ import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.FirestoreClient;
 import correo.PnlCorreo;
 import inicio.PnlInicio;
+import inicioSesion.InicioSesion;
 import inicioSesion.RegistroSesion;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -38,6 +39,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import perfil.PnlPerfil;
@@ -74,40 +77,48 @@ public class Enka extends javax.swing.JFrame {
     private Color claro = DEFAULT_CLA;
     
     private boolean pantallaCom = false;
-    
+    private JFrame ventana;
     private PnlAnimales pnlAni;
     
     public Enka() {
         initComponents();
         crearConexion();
-        primeraVez();
-        ImageIcon icono = new ImageIcon(getClass().getResource("/iconos/vaca.png"));
-        this.setIconImage(icono.getImage());
-        CardLayout card = new CardLayout();
-        pantallaPrincipal.setLayout(card);
-        pnlAni = new PnlAnimales(this.firestore, this);;
-        
-        String[] nombres = datosPerf();
-        PnlInicio pnlIni = new PnlInicio(nombres, firestore);
-        PnlBase pnlVent = new PnlBase(this.firestore);
-        PnlCorreo pnlCorre = new PnlCorreo(this.firestore);
-        PnlPerfil pnlPerf = new PnlPerfil(this.firestore, this);
-        Thread h2 = new Thread(new Runnable(){
+        ventana = this;
+        Thread h1 = new Thread(new Runnable() {
             @Override
             public void run() {
-                pnlPerf.iniciarDatos();
-                pnlPerf.refrescarUsuarios();
+                ventana.setVisible(false);
+                ImageIcon icono = new ImageIcon(getClass().getResource("/iconos/vaca.png"));
+                ventana.setIconImage(icono.getImage());
+                CardLayout card = new CardLayout();
+                pantallaPrincipal.setLayout(card);
+                pnlAni = new PnlAnimales(firestore, ventana);;
+
+                PnlInicio pnlIni = new PnlInicio(firestore);
+                PnlBase pnlVent = new PnlBase(firestore);
+                PnlCorreo pnlCorre = new PnlCorreo(firestore);
+                PnlPerfil pnlPerf = new PnlPerfil(firestore, ventana);
+                Thread h2 = new Thread(new Runnable(){
+                    @Override
+                    public void run() {
+                        pnlPerf.iniciarDatos();
+                        pnlPerf.refrescarUsuarios();
+                    }
+
+                });
+                h2.start();
+                pantallaPrincipal.add(pnlIni, "inicio");
+                pantallaPrincipal.add(pnlAni, "animales");
+                pantallaPrincipal.add(pnlVent, "ventas");
+                pantallaPrincipal.add(pnlCorre, "correo");
+                pantallaPrincipal.add(pnlPerf, "perfil");
+
+                card.show(pantallaPrincipal, "inicio");
             }
-            
         });
-        h2.start();
-        pantallaPrincipal.add(pnlIni, "inicio");
-        pantallaPrincipal.add(pnlAni, "animales");
-        pantallaPrincipal.add(pnlVent, "ventas");
-        pantallaPrincipal.add(pnlCorre, "correo");
-        pantallaPrincipal.add(pnlPerf, "perfil");
-        
-        card.show(pantallaPrincipal, "inicio");
+        h1.start();
+        primeraVez();
+        ventana.setVisible(true);
     }
 
     /**
@@ -409,6 +420,11 @@ public class Enka extends javax.swing.JFrame {
         jMenu2.add(informacion);
 
         jMenuItem7.setText("Acerca de Enka");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem7);
 
         jMenuBar1.add(jMenu2);
@@ -691,6 +707,11 @@ public class Enka extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_trazabilidadAvesActionPerformed
+
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        Info panel = new Info();
+        JOptionPane.showMessageDialog(this, panel, "About", JOptionPane.PLAIN_MESSAGE);
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
     
     public void crearConexion(){
         try {
@@ -726,13 +747,17 @@ public class Enka extends javax.swing.JFrame {
                 sesion.setVisible(true);
                 if(sesion.isContinuar() == false){
                     System.exit(0);
+                }else{
+                    JOptionPane.showMessageDialog(null, "Es necesario reiniciar el programa", "Aviso", 2);
+                    System.exit(0);
                 }
+                
             }else{
-                //InicioSesion sesion = new InicioSesion(null, true, this.firestore);
-                //sesion.setVisible(true);
-                //if(sesion.isContinuar() == false){
-                //    System.exit(0);
-                //}
+                InicioSesion sesion = new InicioSesion(null, true, this.firestore);
+                sesion.setVisible(true);
+                if(sesion.isContinuar() == false){
+                    System.exit(0);
+                }
             }
         } catch (InterruptedException ex) {
             Logger.getLogger(Enka.class.getName()).log(Level.SEVERE, null, ex);
@@ -741,31 +766,7 @@ public class Enka extends javax.swing.JFrame {
         }
     }
     
-    public String[] datosPerf(){
-        String[] nombres = new String[2];;
-        try {
-            String nombreGanadero = "";
-            String nombreExplotacion = "";
-            CollectionReference empresa = firestore.collection("empresa");
-            ApiFuture<QuerySnapshot> querySnapshot = empresa.get();
-            
-            
-            for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
-                if(document.getId().equals("administrador")){
-                    nombreGanadero = document.getString("ganadero");
-                    nombres[1] = nombreGanadero;
-                    nombreExplotacion = document.getString("explotacion");
-                    nombres[0] = nombreExplotacion;
-                }
-            }
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Enka.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ExecutionException ex) {
-            Logger.getLogger(Enka.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        return nombres;
-    }
+    
     
     /**
      * @param args the command line arguments
@@ -779,6 +780,7 @@ public class Enka extends javax.swing.JFrame {
         UIManager.put( "ScrollBar.thumbInsets", new Insets( 2, 2, 2, 2 ) );
         UIManager.put( "TabbedPane.showTabSeparators", true );
         UIManager.put( "TextComponent.arc", 20 );
+        
         //</editor-fold>
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {

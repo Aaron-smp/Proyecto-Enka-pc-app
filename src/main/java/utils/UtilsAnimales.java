@@ -23,6 +23,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -40,33 +41,49 @@ public class UtilsAnimales {
     }
     
     public void introducirBovino(String nIdent, String fechaNac, String sexo, String raza, String momRepro, boolean vendido){
-        Map<String, Object> datos = new HashMap<>();
-        datos.put("Numero identificacion", nIdent);
-        datos.put("Fecha nacimiento", fechaNac);
-        datos.put("Sexo", sexo);
-        datos.put("Raza", raza);
-        datos.put("Momento reproductivo", momRepro);
-        datos.put("Vendido", vendido);
-        firestore.collection("animales").document("bovino").collection("bovinos").add(datos);
+        System.out.println("introducir bovino parametro:" + nIdent);
+        if(!isRepetido("bovino", nIdent)){
+            Map<String, Object> datos = new HashMap<>();
+            datos.put("Numero identificacion", nIdent);
+            datos.put("Fecha nacimiento", fechaNac);
+            datos.put("Sexo", sexo);
+            datos.put("Raza", raza);
+            datos.put("Momento reproductivo", momRepro);
+            datos.put("Vendido", vendido);
+            firestore.collection("animales").document("bovino").collection("bovinos").add(datos);
+            JOptionPane.showMessageDialog(null, "Bovino " + nIdent + " insertado", "Insercion realizada", JOptionPane.INFORMATION_MESSAGE);
+        }else{
+           JOptionPane.showMessageDialog(null, "Crotal repetido", "Aviso", 2);
+        }
     }
     
     public void introducirPorcino(String nIdent, String fechaNac, String sexo, String raza, boolean vendido){
-        Map<String, Object> datos = new HashMap<>();
-        datos.put("Numero identificacion", nIdent);
-        datos.put("Fecha nacimiento", fechaNac);
-        datos.put("Sexo", sexo);
-        datos.put("Raza", raza);
-        datos.put("Vendido", vendido);
-        firestore.collection("animales").document("porcino").collection("porcinos").add(datos);
+        if(!isRepetido("porcino", nIdent)){
+            Map<String, Object> datos = new HashMap<>();
+            datos.put("Numero identificacion", nIdent);
+            datos.put("Fecha nacimiento", fechaNac);
+            datos.put("Sexo", sexo);
+            datos.put("Raza", raza);
+            datos.put("Vendido", vendido);
+            firestore.collection("animales").document("porcino").collection("porcinos").add(datos);
+            JOptionPane.showMessageDialog(null, "Porcino " + nIdent + " insertado", "Insercion realizada", JOptionPane.INFORMATION_MESSAGE);
+        }else{
+           JOptionPane.showMessageDialog(null, "Crotal repetido", "Aviso", 2);
+        }
     }
     
     public void introducirAves(int nLote, int cant, String fecha, boolean vendido){
-        Map<String, Object> datos = new HashMap<>();
-        datos.put("nLote", nLote);
-        datos.put("cantidad", cant);
-        datos.put("fecha", fecha);
-        datos.put("vendido", vendido);
-        firestore.collection("animales").document("ave").collection("aves").add(datos);
+       if(!isRepetido("aves", String.valueOf(nLote))){
+            Map<String, Object> datos = new HashMap<>();
+            datos.put("nLote", nLote);
+            datos.put("cantidad", cant);
+            datos.put("fecha", fecha);
+            datos.put("vendido", vendido);
+            firestore.collection("animales").document("ave").collection("aves").add(datos);
+            JOptionPane.showMessageDialog(null, "Lote " + nLote + " insertado", "Insercion realizada", JOptionPane.INFORMATION_MESSAGE);
+       }else{
+           JOptionPane.showMessageDialog(null, "Lote repetido", "Aviso", 2);
+       }
     }
     
     public boolean comprobarFecha(String fecha) {
@@ -217,5 +234,35 @@ public class UtilsAnimales {
         }
     }
     
-    
+    public boolean isRepetido(String animal, String crotal){
+        boolean salida = false;
+        if(animal.equals("bovino")){
+            List<QueryDocumentSnapshot> bovino = getBovinos();
+            for (QueryDocumentSnapshot documento : bovino) {
+                String numIde = documento.getString("Numero identificacion");
+                System.out.println("Num de isRepetido:" + numIde);
+                if(crotal.equals(numIde)){
+                    salida = true;
+                }
+            }
+        }else if(animal.equals("porcino")){
+            List<QueryDocumentSnapshot> porcinos = getPorcinos();
+            for (QueryDocumentSnapshot documento : porcinos) {
+                String numIde = documento.getString("Numero identificacion");
+                if(crotal.equals(numIde)){
+                    salida = true;
+                }
+            }
+        }else{
+            List<QueryDocumentSnapshot> aves = getAves();
+            for (QueryDocumentSnapshot documento : aves) {
+                String numIde = documento.getString("nLote");
+                if(crotal.equals(numIde)){
+                    salida = true;
+                }
+            }
+        }
+        
+        return salida;
+    }
 }

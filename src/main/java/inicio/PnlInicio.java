@@ -4,8 +4,14 @@
  */
 package inicio;
 
+import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.CollectionReference;
+import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.QuerySnapshot;
+import com.mycompany.enka.Enka;
 import java.awt.Color;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -22,12 +28,10 @@ public class PnlInicio extends javax.swing.JPanel {
      */
     private Firestore firestore;
     
-    public PnlInicio(String[] nombres, Firestore firestore) {
+    public PnlInicio(Firestore firestore) {
         initComponents();
         this.firestore = firestore;
-        ganaderia.setText("Ganaderia: " + nombres[0]);
-        ganadero.setText("Bienvenido " + nombres[1] + "!");
-        
+        panelStats.setVisible(false);
         Thread h1 = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -35,7 +39,11 @@ public class PnlInicio extends javax.swing.JPanel {
                     try {
                         updateStats();
                         updateUI();
+                        System.out.println("Entra al metodo");
+                        tiempoParaAcualizar();
+                        System.out.println("Empieza la espera");
                         Thread.sleep(60000);
+                        System.out.println("Acaba la espera");
                     } catch (InterruptedException ex) {
                         Logger.getLogger(PnlInicio.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -57,7 +65,6 @@ public class PnlInicio extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel3 = new javax.swing.JLabel();
-        ganaderia = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         ganadero = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
@@ -76,15 +83,16 @@ public class PnlInicio extends javax.swing.JPanel {
         bovin = new javax.swing.JLabel();
         porcin = new javax.swing.JLabel();
         aves = new javax.swing.JLabel();
+        jPanel7 = new javax.swing.JPanel();
+        ganaderia = new javax.swing.JLabel();
+        panelStats = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        stats = new javax.swing.JLabel();
 
         jLabel3.setText("jLabel3");
 
         setLayout(new java.awt.BorderLayout());
-
-        ganaderia.setFont(new java.awt.Font("Poppins", 0, 36)); // NOI18N
-        ganaderia.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        ganaderia.setText("Ganaderia: No introducida");
-        add(ganaderia, java.awt.BorderLayout.NORTH);
 
         jPanel2.setLayout(new java.awt.GridLayout(6, 1));
 
@@ -179,7 +187,102 @@ public class PnlInicio extends javax.swing.JPanel {
         jPanel2.add(jPanel6);
 
         add(jPanel2, java.awt.BorderLayout.CENTER);
+
+        jPanel7.setLayout(new java.awt.BorderLayout());
+
+        ganaderia.setFont(new java.awt.Font("Poppins", 0, 36)); // NOI18N
+        ganaderia.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ganaderia.setText("Ganaderia: No introducida");
+        ganaderia.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                ganaderiaMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                ganaderiaMouseExited(evt);
+            }
+        });
+        jPanel7.add(ganaderia, java.awt.BorderLayout.CENTER);
+
+        panelStats.setLayout(new java.awt.GridLayout(3, 1));
+
+        jLabel1.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Refresco");
+        panelStats.add(jLabel1);
+
+        jLabel2.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("en");
+        panelStats.add(jLabel2);
+
+        stats.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        stats.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        stats.setText("segundos");
+        panelStats.add(stats);
+
+        jPanel7.add(panelStats, java.awt.BorderLayout.LINE_END);
+
+        add(jPanel7, java.awt.BorderLayout.NORTH);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void ganaderiaMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ganaderiaMouseEntered
+        panelStats.setVisible(true);
+    }//GEN-LAST:event_ganaderiaMouseEntered
+
+    private void ganaderiaMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ganaderiaMouseExited
+        panelStats.setVisible(false);
+    }//GEN-LAST:event_ganaderiaMouseExited
+    
+    public String[] datosPerf(){
+        String[] nombres = new String[2];;
+        try {
+            String nombreGanadero = "";
+            String nombreExplotacion = "";
+            CollectionReference empresa = firestore.collection("empresa");
+            ApiFuture<QuerySnapshot> querySnapshot = empresa.get();
+            
+            
+            for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
+                if(document.getId().equals("administrador")){
+                    nombreGanadero = document.getString("ganadero");
+                    nombres[1] = nombreGanadero;
+                    nombreExplotacion = document.getString("explotacion");
+                    nombres[0] = nombreExplotacion;
+                }
+            }
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Enka.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ExecutionException ex) {
+            Logger.getLogger(Enka.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return nombres;
+    }
+    
+    public void tiempoParaAcualizar(){
+        Thread h1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int segundos = 60;
+                while(true){
+                    try {
+                        Thread.sleep(1000);
+                        segundos -= 1;
+                        ganaderia.setToolTipText("Tiempo para refresco: " + String.valueOf(segundos) + " segundos");
+                        stats.setText(String.valueOf(segundos) + " segundos");
+                        if(segundos == 0){
+                            segundos = 60;
+                        }
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(PnlInicio.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                
+            }
+        });
+        
+        h1.start();
+    }
     
     public void updateStats(){
         UtilsInicio util = new UtilsInicio(this.firestore);
@@ -187,7 +290,9 @@ public class PnlInicio extends javax.swing.JPanel {
         int numBovino = util.getNumberBovinos();
         int numPorcino = util.getNumberPorcinos();
         int numAves = util.getNumberAves();
-        
+        String[] nombres = datosPerf();
+        ganaderia.setText("Ganaderia: " + nombres[0]);
+        ganadero.setText("Bienvenido " + nombres[1] + "!");
         nBovinos.setText("Nº de bovinos: " + numBovino);
         nPorcino.setText("Nº de porcinos: " + numPorcino);
         nAves.setText("Nº de aves: " + numAves);
@@ -222,6 +327,8 @@ public class PnlInicio extends javax.swing.JPanel {
     private javax.swing.JLabel ganadero;
     private javax.swing.JLabel gastos;
     private javax.swing.JLabel ingresos;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -229,10 +336,13 @@ public class PnlInicio extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JLabel nAves;
     private javax.swing.JLabel nBovinos;
     private javax.swing.JLabel nPorcino;
+    private javax.swing.JPanel panelStats;
     private javax.swing.JLabel piensoKg;
     private javax.swing.JLabel porcin;
+    private javax.swing.JLabel stats;
     // End of variables declaration//GEN-END:variables
 }

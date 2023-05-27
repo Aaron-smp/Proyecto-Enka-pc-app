@@ -10,6 +10,7 @@ import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.WriteResult;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import utils.UtilsCorreo;
 
@@ -43,23 +44,27 @@ public class PnlAjustesCorreo extends javax.swing.JPanel {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
+        jPanel7 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         servidor = new javax.swing.JTextField();
         editarServidorSmtp = new javax.swing.JButton();
-        jPanel4 = new javax.swing.JPanel();
+        jPanel8 = new javax.swing.JPanel();
         puerto = new javax.swing.JTextField();
         editarPuertoSmtp = new javax.swing.JButton();
-        jPanel5 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
 
         setLayout(new java.awt.BorderLayout());
 
-        jPanel1.setPreferredSize(new java.awt.Dimension(150, 409));
+        jPanel1.setPreferredSize(new java.awt.Dimension(200, 409));
         jPanel1.setLayout(new java.awt.GridLayout(10, 1));
+        jPanel1.add(jPanel6);
 
         jLabel1.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -82,13 +87,15 @@ public class PnlAjustesCorreo extends javax.swing.JPanel {
         add(jPanel1, java.awt.BorderLayout.LINE_START);
 
         jPanel2.setLayout(new java.awt.GridLayout(10, 1));
+        jPanel2.add(jPanel7);
 
         servidor.setEditable(false);
         servidor.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
         servidor.setPreferredSize(new java.awt.Dimension(300, 34));
         jPanel3.add(servidor);
 
-        editarServidorSmtp.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        editarServidorSmtp.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
+        editarServidorSmtp.setIcon(new ImageIcon(getClass().getResource("/iconos/editar.png")));
         editarServidorSmtp.setText("Editar");
         editarServidorSmtp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -102,24 +109,26 @@ public class PnlAjustesCorreo extends javax.swing.JPanel {
         puerto.setEditable(false);
         puerto.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
         puerto.setPreferredSize(new java.awt.Dimension(300, 34));
-        jPanel4.add(puerto);
+        jPanel8.add(puerto);
 
-        editarPuertoSmtp.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        editarPuertoSmtp.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
+        editarPuertoSmtp.setIcon(new ImageIcon(getClass().getResource("/iconos/editar.png")));
         editarPuertoSmtp.setText("Editar");
         editarPuertoSmtp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 editarPuertoSmtpActionPerformed(evt);
             }
         });
-        jPanel4.add(editarPuertoSmtp);
+        jPanel8.add(editarPuertoSmtp);
 
-        jPanel2.add(jPanel4);
+        jPanel2.add(jPanel8);
 
         jLabel4.setFont(new java.awt.Font("Poppins SemiBold", 0, 18)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("TLSv1.2");
-        jPanel5.add(jLabel4);
+        jPanel4.add(jLabel4);
 
+        jPanel2.add(jPanel4);
         jPanel2.add(jPanel5);
 
         add(jPanel2, java.awt.BorderLayout.CENTER);
@@ -170,6 +179,9 @@ public class PnlAjustesCorreo extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
     private javax.swing.JTextField puerto;
     private javax.swing.JTextField servidor;
     // End of variables declaration//GEN-END:variables

@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -38,9 +39,12 @@ public class PnlGastos extends javax.swing.JPanel {
     public PnlGastos(Firestore firestore) {
         initComponents();
         this.firestore = firestore;
-        Font headerFont = new Font("Segoe UI", Font.PLAIN, 18);
+        Font headerFont = new Font("Poppins Light", Font.PLAIN, 20);
         JTableHeader header = tablaGastos.getTableHeader();
         header.setFont(headerFont);
+        tablaGastos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tablaGastos.setRowSelectionAllowed(true);
+        tablaGastos.setColumnSelectionAllowed(false);
         
         TableColumn column = tablaGastos.getColumnModel().getColumn(3);
         column.setPreferredWidth(150);
@@ -250,6 +254,7 @@ public class PnlGastos extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tablaGastos.setShowGrid(true);
         jScrollPane1.setViewportView(tablaGastos);
 
         add(jScrollPane1, java.awt.BorderLayout.CENTER);

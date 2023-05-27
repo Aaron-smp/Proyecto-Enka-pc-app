@@ -52,7 +52,6 @@ public class InicioSesion extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(400, 350));
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(400, 350));
 
         jPanel1.setMinimumSize(new java.awt.Dimension(400, 350));
         jPanel1.setPreferredSize(new java.awt.Dimension(400, 350));
@@ -77,6 +76,8 @@ public class InicioSesion extends javax.swing.JDialog {
         });
         jPanel1.add(exitButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 0, 50, 30));
 
+        user.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
+        user.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         user.setText("Usuario");
         user.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -85,7 +86,9 @@ public class InicioSesion extends javax.swing.JDialog {
         });
         jPanel1.add(user, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 130, 270, 40));
 
-        passwd.setText("jPasswordField1");
+        passwd.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        passwd.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        passwd.setText("contraseña");
         passwd.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 passwdMouseClicked(evt);
@@ -93,7 +96,7 @@ public class InicioSesion extends javax.swing.JDialog {
         });
         jPanel1.add(passwd, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 190, 270, 40));
 
-        iniciarSesion.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        iniciarSesion.setFont(new java.awt.Font("Poppins Light", 0, 16)); // NOI18N
         iniciarSesion.setText("Iniciar sesion");
         iniciarSesion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -149,15 +152,15 @@ public class InicioSesion extends javax.swing.JDialog {
     }//GEN-LAST:event_passwdMouseClicked
 
     private void iniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iniciarSesionActionPerformed
-        System.out.println("Hola");
         UtilsAnimales util = new UtilsAnimales(firestore);
         String[] credenciales = util.getAdmin();
         char[] contraseña = passwd.getPassword();
         String passwdT = "";
         for(int i = 0; i < contraseña.length; i++){
-            passwdT += i;
+            passwdT += contraseña[i];
         }
         passwdT = getSHA256(passwdT);
+        System.out.println(passwdT);
         if(credenciales[1].equals(passwdT) && user.getText().equals(credenciales[0])){
             continuar = true;
             this.dispose();
